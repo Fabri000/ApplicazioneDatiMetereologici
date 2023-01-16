@@ -13,19 +13,23 @@ public class app {
                 .appName("Applicazione dati meteo")
                 .getOrCreate();
         Starter.start(spark);
-        Dataset f = Starter.getDatas("stations");
-        System.out.println("Numero righe "+f.count()+"\n");
-        f.printSchema();
-        f.createOrReplaceTempView("stations");
 
         Scanner in = new Scanner(System.in);
         String query;
+        String dataset;
         while(true){
+            System.out.println("--------------\nInserisci qui il dataset da interrogare");
+            dataset=in.nextLine();
+            if(dataset==null) break;
+            Dataset f = Starter.getDatas(dataset);
+            f.printSchema();
+            f.createOrReplaceTempView(dataset);
             System.out.print("---------------- \nInserisci qui la query per le stazioni:");
             query=in.nextLine();
             if(query==null) break;
-            System.out.println("La tua queruy: "+query+"\n");
+            System.out.println("La tua query: "+query+"\n");
             spark.sql(query).show();
         }
+        System.out.println("----------\nFine esecuzione\n--------------");
     }
 }
