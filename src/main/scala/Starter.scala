@@ -1,7 +1,6 @@
 
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import QueryType.STATE,QueryType.TZONE,QueryType.DIVCOD
 
 
 object Starter {
@@ -11,6 +10,7 @@ object Starter {
   var precip :DataFrame = null
   var remarks :DataFrame = null
   var stations : DataFrame = null
+
   def start(spark: SparkSession )={
     val d= new Array[DataFrame](12)
     val m= new Array[DataFrame](12)
@@ -119,6 +119,17 @@ object Starter {
     val df: DataFrame = getDatas(set)
     val stationOfInterest = stations.select("WBAN").filter("Timezone=" + tzone)
     return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay  >=" + in + " AND YearMonthDay <= " + fin)
+  }
+
+  def getMeasureByDay1 (set:String, data:String, measure:String, tipo:QueryType , values: Array[String] ):DataFrame={
+    val df: DataFrame = getDatas(set)
+    val query  = tipo match {
+      case QueryType.STATE => "State='"+values(0)+"'"
+      case QueryType.TZONE => "TimeZone="+values(0)
+      case QueryType.DIVCOD=> "State='"+values(0)+"' AND ClimateDivisionCode='"+values(1)+"'"
+    }
+    val stationOfInterest = stations.select("WBAN").filter(query)
+    return df.join(stationOfInterest, "WBAN").dropDuplicates().select("*").filter("YearMonthDay ="+data)
   }
 
 }
