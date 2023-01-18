@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Versione iniziale">
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Aggiunta delle prime  query per ottenere misurazioni orarie/giornaliere per una determinata stazione o per uno stato.">
+      <change afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Starter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Starter.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +105,10 @@
       <workItem from="1673776449320" duration="3129000" />
       <workItem from="1673797954665" duration="3127000" />
       <workItem from="1673804429056" duration="375000" />
-      <workItem from="1673859738889" duration="1136000" />
+      <workItem from="1673859738889" duration="5709000" />
+      <workItem from="1673947861591" duration="7112000" />
+      <workItem from="1673968537861" duration="2614000" />
+      <workItem from="1674030809632" duration="985000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -112,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673804629199</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Prima modifica: aggiunta main java per interrogazioni sul db.">
+      <created>1673861084400</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1673861084400</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,6 +132,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Versione iniziale" />
-    <option name="LAST_COMMIT_MESSAGE" value="Versione iniziale" />
+    <MESSAGE value="Prima modifica: aggiunta main java per interrogazioni sul db." />
+    <MESSAGE value="Aggiunta delle prime  query per ottenere misurazioni orarie/giornaliere per una determinata stazione o per uno stato." />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunta delle prime  query per ottenere misurazioni orarie/giornaliere per una determinata stazione o per uno stato." />
   </component>
 </project>

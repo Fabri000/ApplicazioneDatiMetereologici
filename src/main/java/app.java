@@ -1,10 +1,6 @@
-
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
-
 import java.util.Scanner;
-
-import static org.apache.spark.sql.functions.col;
 
 public class app {
     public static void main (String[] args){
@@ -13,22 +9,20 @@ public class app {
                 .appName("Applicazione dati meteo")
                 .getOrCreate();
         Starter.start(spark);
-
+        Starter.getDatas("stations").printSchema();
         Scanner in = new Scanner(System.in);
-        String query;
-        String dataset;
+        String dataset,state, misura,station,giorno;
         while(true){
-            System.out.println("--------------\nInserisci qui il dataset da interrogare");
+            System.out.print("--------------\nInserisci qui il dataset da interrogare:");
             dataset=in.nextLine();
             if(dataset==null) break;
-            Dataset f = Starter.getDatas(dataset);
-            f.printSchema();
-            f.createOrReplaceTempView(dataset);
-            System.out.print("---------------- \nInserisci qui la query per le stazioni:");
-            query=in.nextLine();
-            if(query==null) break;
-            System.out.println("La tua query: "+query+"\n");
-            spark.sql(query).show();
+            System.out.print("---------------- \nInserisci qui la data interessata:");
+            giorno=in.nextLine();
+            System.out.print("---------------- \nInserisci qui la misura interessata:");
+            misura=in.nextLine();
+            System.out.println("La misura ricercata è: "+misura+"\n");
+            System.out.print("---------------- \nInserisci qui lo stato di interesse:");
+            state=in.nextLine();
         }
         System.out.println("----------\nFine esecuzione\n--------------");
     }

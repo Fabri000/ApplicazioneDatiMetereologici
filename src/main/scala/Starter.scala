@@ -1,5 +1,6 @@
 
 import org.apache.spark.SparkContext
+import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 
@@ -47,8 +48,42 @@ object Starter {
       case "hourly"=>hourly
       case "precip"=>precip
       case "remarks"=> remarks
-      case "stations"=>stations
+      case "stations" => stations
     }
     return df
   }
+
+  def getStationMeasursByDay(set:String, data:String , measure:String, station:String):DataFrame={
+      val df:DataFrame= getDatas(set)
+      return df.select(measure).filter("YearMonthDay="+data+" AND WBAN="+station)
+  }
+
+  def getStationMeasureInPeriod(set:String, measure:String,station:String, in:String, fin:String):DataFrame={
+    val df:DataFrame=getDatas(set)
+    return df.select(measure).filter("YearMonthDay<="+fin+" AND "+"YearMonthDay>="+in+" AND WBAN="+station)
+  }
+
+  def getStationDayHourlyMeasureInPeriod(set: String, data:String, measure: String, station: String, in: String, fin: String): DataFrame = {
+    val df: DataFrame = getDatas(set)
+    return df.select(measure).filter("YearMonthDay="+data+" AND Time<=" + fin + " AND " + "Time>=" + in + " AND WBAN=" + station)
+  }
+
+  def getMeasureState(set:String, data:String , measure:String,state:String):DataFrame={
+    val df: DataFrame = getDatas(set)
+    val stationOfInterest = stations.select( "WBAN" , "State").filter("State='"+ state+"'")
+    return df.join(stationOfInterest,  "WBAN").select(measure).filter("YearMonthDay="+data)
+  }
+
+  def getMeasureStateInPeriod(set:String, measure:String, state:String, in:String, fin:String):DataFrame={
+    val df : DataFrame=getDatas(set)
+    val stationOfInterest = stations.select("WBAN", "State").filter("State='" + state + "'")
+    return df.join(stationOfInterest, "WBAN").select(measure).filter("YearMonthDay<="+fin+" AND YearMonthDay>="+in)
+  }
+
+  def getMeasureStateDayHourlyInPeriod(set: String, data:String, measure: String, state: String, in: String, fin: String): DataFrame ={
+    val df: DataFrame = getDatas(set)
+    val stationOfInterest = stations.select("WBAN", "State").filter("State='" + state + "'")
+    return df.join(stationOfInterest, "WBAN").select(measure).filter("YearMonthDay=" + data+ " AND Time<=" + fin + " AND " + "Time>=" + in )
+  }
+
 }
