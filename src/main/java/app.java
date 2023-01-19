@@ -25,7 +25,7 @@ public class app {
             misura=in.nextLine();
             System.out.print("---------------- \nInserisci qui lo stato di interesse:");
             values[0]=in.nextLine();
-            Starter.getMeasureByDay1(dataset,giorno, misura,QueryType.STATE,values).show();
+            Starter.getMeasureByDay(dataset,giorno, misura,QueryType.STATE,values).show();
         }
         Starter.getDatas("stations").select("*").where("State='CO' AND ClimateDivisionCode='02'").show();
 

@@ -53,83 +53,52 @@ object Starter {
     return df
   }
 
-  def getStationMeasursByDay(set:String, data:String , measure:String, station:String):DataFrame={
-      val df:DataFrame= getDatas(set)
-      return df.select(measure).filter("YearMonthDay="+data+" AND WBAN="+station)
-  }
-
-  def getStationMeasureInPeriod(set:String, measure:String,station:String, in:String, fin:String):DataFrame={
-    val df:DataFrame=getDatas(set)
-    return df.select(measure).filter("YearMonthDay<="+fin+" AND "+"YearMonthDay>="+in+" AND WBAN="+station)
-  }
-
-  def getStationDayHourlyMeasureInPeriod(set: String, data:String, measure: String, station: String, in: String, fin: String): DataFrame = {
+  def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType , values: Array[String] ):DataFrame={
     val df: DataFrame = getDatas(set)
-    return df.select(measure).filter("YearMonthDay="+data+" AND Time<=" + fin + " AND " + "Time>=" + in + " AND WBAN=" + station)
-  }
-
-  def getMeasureStateByDay(set:String, data:String, measure:String,state:String):DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select( "WBAN").filter("State='"+ state+"'")
-    return df.join(stationOfInterest,  "WBAN").dropDuplicates().select(measure).filter("YearMonthDay="+data)
-  }
-
-  def getMeasureStateInPeriod(set:String, measure:String, state:String, in:String, fin:String):DataFrame={
-    val df : DataFrame=getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + state + "'")
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay<="+fin+" AND YearMonthDay>="+in)
-  }
-
-  def getMeasureStateDayHourlyInPeriod(set: String, data:String, measure: String, state: String, in: String, fin: String): DataFrame ={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + state + "'")
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay=" + data+ " AND Time<=" + fin + " AND " + "Time>=" + in )
-  }
-
-  def getMeasureClimateDivisionByDay(set:String, data:String,measure:String, state:String, divcod:String): DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + state + "' AND ClimateDivisionCode='"+divcod+"'")
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay=" + data)
-  }
-
-  def getMeasureClimateDivisionInPeriod(set:String,measure:String, state:String, divcod:String, in: String, fin: String):DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + state + "' AND ClimateDivisionCode='"+divcod+"'")
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay  >="+in+" AND YearMonthDay <= "+fin )
-  }
-  def getMeasureClimateDivisionHourlyInPeriod(set:String,data:String,measure:String, state:String, divcod:String, in: String, fin: String): DataFrame = {
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + state + "' AND ClimateDivisionCode='" + divcod + "'")
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay ="+data+" AND Time <= "+fin+" AND Time >="+in )
-  }
-
-  def getMeasureTimezoneByDay(set:String, data:String, measure:String, tzone:String ): DataFrame = {
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("TimeZone="+tzone)
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay ="+data)
-  }
-
-  def getMeasureTimezoneInPeriod(set:String,measure:String, tzone:String, in: String, fin: String):DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("Timezone="+tzone)
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay  >=" + in + " AND YearMonthDay <= " + fin)
-  }
-
-  def  getMeasureTimezoneHourlyInPeriod(set:String,data:String,measure:String, tzone:String, in: String, fin: String):DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter("Timezone=" + tzone)
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay  >=" + in + " AND YearMonthDay <= " + fin)
-  }
-
-  def getMeasureByDay1 (set:String, data:String, measure:String, tipo:QueryType , values: Array[String] ):DataFrame={
-    val df: DataFrame = getDatas(set)
-    val query  = tipo match {
-      case QueryType.STATE => "State='"+values(0)+"'"
-      case QueryType.TZONE => "TimeZone="+values(0)
-      case QueryType.DIVCOD=> "State='"+values(0)+"' AND ClimateDivisionCode='"+values(1)+"'"
+    if(tipo == QueryType.STATION){
+      return df.select(measure).filter("YearMonthDay="+data+" AND WBAN="+values(0))
     }
-    val stationOfInterest = stations.select("WBAN").filter(query)
-    return df.join(stationOfInterest, "WBAN").dropDuplicates().select("*").filter("YearMonthDay ="+data)
+    else{
+      val query = tipo match {
+        case QueryType.STATE => "State='" + values(0) + "'"
+        case QueryType.TZONE => "TimeZone=" + values(0)
+        case QueryType.DIVCOD => "State='" + values(0) + "' AND ClimateDivisionCode='" + values(1) + "'"
+      }
+      val stationOfInterest = stations.select("WBAN").filter(query)
+      return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay =" + data)
+    }
+  }
+
+  def getMeasureInPeriod(set: String, in: String, fin:String, measure: String, tipo: QueryType, values: Array[String]): DataFrame = {
+    val df: DataFrame = getDatas(set)
+    if (tipo == QueryType.STATIONP) {
+      return df.select(measure).filter("YearMonthDay<="+fin+" AND "+"YearMonthDay>="+in+" AND WBAN="+ values[0])
+    }
+    else {
+      val query = tipo match {
+        case QueryType.STATEP => "State='" + values(0) + "'"
+        case QueryType.TZONEP => "TimeZone=" + values(0)
+        case QueryType.DIVCODP => "State='" + values(0) + "' AND ClimateDivisionCode='" + values(1) + "'"
+      }
+      val stationOfInterest = stations.select("WBAN").filter(query)
+      return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay  >=" + in + " AND YearMonthDay <= " + fin)
+    }
+  }
+
+  def getMeasureInHourlyPeriod(set: String, data: String, in: String, fin: String, measure: String, tipo: QueryType, values: Array[String]): DataFrame = {
+    val df: DataFrame = getDatas(set)
+    if (tipo == QueryType.STATIONHP) {
+      return df.select(measure).filter("YearMonthDay=" + data + " AND " + "Time>=" + in + "AND Time<= "+fin+ " AND WBAN=" + values[0])
+    }
+    else {
+      val query = tipo match {
+        case QueryType.STATEHP => "State='" + values(0) + "'"
+        case QueryType.TZONEHP => "TimeZone=" + values(0)
+        case QueryType.DIVCODHP => "State='" + values(0) + "' AND ClimateDivisionCode='" + values(1) + "'"
+      }
+      val stationOfInterest = stations.select("WBAN").filter(query)
+      return df.join(stationOfInterest, "WBAN").dropDuplicates().select(measure).filter("YearMonthDay=" + data + " AND " + "Time>=" + in + "AND Time<= "+fin+ " AND WBAN=" + values[0])
+    }
   }
 
 }

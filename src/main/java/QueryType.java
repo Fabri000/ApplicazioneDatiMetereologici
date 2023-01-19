@@ -1,5 +1,15 @@
 public enum QueryType {
+    STATION,
     TZONE,
     STATE,
-    DIVCOD
+    DIVCOD,
+    STATIONP,
+    TZONEP,
+    STATEP,
+    DIVCODP,
+    STATIONHP,
+    TZONEHP,
+    STATEHP,
+    DIVCODHP
+
 }
