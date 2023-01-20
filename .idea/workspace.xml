@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Riduzione ad un unica funzione per le queary di ricerca di valori di interesse per un giorno.">
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Raggruppate tutte le query che svolgono funzionalità simili.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/QueryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/QueryType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app.java" afterDir="false" />
@@ -116,7 +116,8 @@
       <workItem from="1673947861591" duration="7112000" />
       <workItem from="1673968537861" duration="2614000" />
       <workItem from="1674030809632" duration="9889000" />
-      <workItem from="1674123209238" duration="448000" />
+      <workItem from="1674123209238" duration="595000" />
+      <workItem from="1674204607609" duration="3700000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -153,7 +154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674041919888</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Raggruppate tutte le query che svolgono funzionalità simili.">
+      <created>1674123713825</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1674123713825</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +173,7 @@
     <MESSAGE value="Aggiunta delle prime  query per ottenere misurazioni orarie/giornaliere per una determinata stazione o per uno stato." />
     <MESSAGE value="Aggiunte tutte le query di recupero di informazioni per i dataset  dayly e hourly." />
     <MESSAGE value="Riduzione ad un unica funzione per le queary di ricerca di valori di interesse per un giorno." />
-    <option name="LAST_COMMIT_MESSAGE" value="Riduzione ad un unica funzione per le queary di ricerca di valori di interesse per un giorno." />
+    <MESSAGE value="Raggruppate tutte le query che svolgono funzionalità simili." />
+    <option name="LAST_COMMIT_MESSAGE" value="Raggruppate tutte le query che svolgono funzionalità simili." />
   </component>
 </project>
