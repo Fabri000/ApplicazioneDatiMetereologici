@@ -1,6 +1,11 @@
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import QueryType.STATE,QueryType.TZONE,QueryType.DIVCOD
+import org.apache.spark.sql.{DataFrame, SparkSession, functions}
+import QueryType.STATE
+import QueryType.TZONE
+import QueryType.DIVCOD
+import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.functions.{col, lit, round}
+
 
 
 object Starter {
@@ -132,4 +137,18 @@ object Starter {
       return df.join(stationOfInterest, "WBAN").select("WBAN","YearMonth",measure).filter("YearMonth<=" + fin +"YearMonth>="+ in)
     }
   }
+  def getReliabilityOfStation(set:String, station:String, measure: String) : Float ={
+    val df: DataFrame = getDatas(set)
+    return df.filter("WBAN ='"+station+"' AND " + measure+"= 'M'").count().toFloat / df.filter("WBAN ='"+station+"'").count()
+  }
+
+  def getReliabilityOfStations(set:String, measure:String): DataFrame={
+    val df: DataFrame = getDatas(set)
+    val missingValue :DataFrame = df.filter( measure+"= 'M'").groupBy("WBAN").agg(functions.count(measure).as("NumberOfMissing"))
+    val other: DataFrame= df.groupBy("WBAN").agg(functions.count(measure).as("NumberOfMeasures"))
+    return missingValue.join(other, "WBAN").withColumn("One",lit(1)).withColumn("Reliability", round((col("One") - col("NumberOfMissing").divide(col("NumberOfMeasures")))*100)).select("WBAN","Reliability")
+  }
+
+
+
 }

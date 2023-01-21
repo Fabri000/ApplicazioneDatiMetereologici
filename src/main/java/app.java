@@ -30,7 +30,7 @@ public class app {
             Starter.getMeasureInPeriod(dataset,start,fin,misura,QueryType.STATE, values ).show();
         }*/
 
-        Starter.getDatas("dayly").show();
+        Starter.getReliabilityOfStations("dayly","Tmax").show();
         System.out.println("----------\nFine esecuzione\n--------------");
     }
 }
