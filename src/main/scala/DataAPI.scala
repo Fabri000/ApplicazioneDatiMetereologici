@@ -7,7 +7,7 @@ import org.apache.spark.sql.functions.{col, lit, round, udf}
 
 
 
-object Starter {
+object DataAPI {
   var dayly :DataFrame = null
   var monthly :DataFrame = null
   var hourly :DataFrame = null

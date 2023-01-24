@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)">
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Implementate tutte le query per il dataframe.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/GUI/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Starter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Starter.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/Starter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -51,20 +52,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/project/ApplicazioneDatiMetereologici",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Application.app">
+}]]></component>
+  <component name="RunManager" selected="Application.ApplicazioneDatiMetereologici">
+    <configuration name="ApplicazioneDatiMetereologici" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ApplicazioneDatiMetereologici" />
+      <module name="ApplicazioneDatiMetereologici" />
+      <option name="VM_PARAMETERS" value="--add-exports java.base/sun.nio.ch=ALL-UNNAMED" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Starter" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Starter" />
       <module name="ApplicazioneDatiMetereologici" />
@@ -73,21 +83,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="app" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app" />
-      <module name="ApplicazioneDatiMetereologici" />
-      <option name="VM_PARAMETERS" value="--add-exports java.base/sun.nio.ch=ALL-UNNAMED" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
-      <item itemvalue="Application.app" />
+      <item itemvalue="Application.ApplicazioneDatiMetereologici" />
       <item itemvalue="Application.Starter" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.app" />
+        <item itemvalue="Application.ApplicazioneDatiMetereologici" />
         <item itemvalue="Application.Starter" />
       </list>
     </recent_temporary>
@@ -122,7 +124,8 @@
       <workItem from="1674480163782" duration="10652000" />
       <workItem from="1674507768762" duration="3185000" />
       <workItem from="1674550942516" duration="2638000" />
-      <workItem from="1674576789875" duration="903000" />
+      <workItem from="1674576789875" duration="1353000" />
+      <workItem from="1674578476068" duration="1312000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -180,7 +183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674297369473</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Implementate tutte le query per il dataframe.">
+      <created>1674577810940</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1674577810940</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +205,7 @@
     <MESSAGE value="Raggruppate tutte le query che svolgono funzionalità simili." />
     <MESSAGE value="Implementati query per recupero delle misurazioni di interesse per i vari dataset (eccetto i remarks)." />
     <MESSAGE value="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)" />
+    <MESSAGE value="Implementate tutte le query per il dataframe." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementate tutte le query per il dataframe." />
   </component>
 </project>
