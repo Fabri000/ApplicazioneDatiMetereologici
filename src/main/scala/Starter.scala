@@ -3,8 +3,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession, functions}
 import QueryType.STATE
 import QueryType.TZONE
 import QueryType.DIVCOD
-import org.apache.spark.sql.catalyst.encoders.RowEncoder
-import org.apache.spark.sql.functions.{col, lit, round}
+import org.apache.spark.sql.functions.{col, lit, round, udf}
 
 
 
@@ -58,7 +57,7 @@ object Starter {
     return df
   }
 
-  def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType , values: Array[String] ):DataFrame={
+  def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType , values: String* ):DataFrame={
     val df: DataFrame = getDatas(set)
     if(tipo == QueryType.STATION){
       return df.select(measure).filter("YearMonthDay="+data+" AND WBAN="+values(0))
@@ -74,10 +73,12 @@ object Starter {
     }
   }
 
-  def getMeasureInPeriod(set: String, in: String, fin:String, measure: String, tipo: QueryType, values: Array[String]): DataFrame = {
+  def getMeasureInPeriod(set: String, in: String, fin:String, measure:String, tipo: QueryType, values: String*): DataFrame = {
     val df: DataFrame = getDatas(set)
+    var date="YearMonthDay"
+    if(set=="hourly") date = "Date"
     if (tipo == QueryType.STATION) {
-      return df.select("YearMonthDay",measure).filter("YearMonthDay<="+fin+" AND "+"YearMonthDay>="+in+" AND WBAN="+ values(0))
+      return df.select(date,measure).filter(date+"<="+fin+" AND "+date+">="+in+" AND WBAN="+ values(0))
     }
     else {
       val query = tipo match {
@@ -86,14 +87,13 @@ object Starter {
         case QueryType.DIVCOD => "State='" + values(0) + "' AND ClimateDivisionCode='" + values(1) + "'"
       }
       val stationOfInterest = stations.select("WBAN").filter(query)
-      return df.join(stationOfInterest, "WBAN").select("WBAN", "YearMonthDay" , measure).filter("YearMonthDay  >=" + in + " AND YearMonthDay <= " + fin)
+      return df.join(stationOfInterest, "WBAN").select("WBAN", date , measure).filter(date+">=" + in + " AND "+date+"<=" + fin)
     }
   }
-
-  def getMeasureInHourlyPeriod(set: String, data: String, in: String, fin: String, measure: String, tipo: QueryType, values: Array[String]): DataFrame = {
-    val df: DataFrame = getDatas(set)
+  def getMeasureInHourlyPeriod(data: String, in: String, fin: String, measure: String, tipo: QueryType, values:String*): DataFrame = {
+    val df: DataFrame = getDatas("hourly")
     if (tipo == QueryType.STATION) {
-      return df.select("Time",measure).filter("YearMonthDay=" + data + " AND " + "Time>=" + in + "AND Time<= "+fin+ " AND WBAN=" + values(0))
+      return df.select("WBAN","Date","Time",measure).filter("Date=" + data + " AND " + "Time>=" + in + "AND Time<= "+fin+ " AND WBAN=" + values(0))
     }
     else {
       val query = tipo match {
@@ -102,11 +102,10 @@ object Starter {
         case QueryType.DIVCOD => "State='" + values(0) + "' AND ClimateDivisionCode='" + values(1) + "'"
       }
       val stationOfInterest = stations.select("WBAN").filter(query)
-      return df.join(stationOfInterest, "WBAN").select("WBAN","Time",measure).filter("YearMonthDay=" + data + " AND " + "Time>=" + in + "AND Time<= "+fin)
+      return df.join(stationOfInterest, "WBAN").select("WBAN","Date","Time",measure).filter("Date=" + data + " AND Time>=" + in + " AND Time<= "+fin)
     }
   }
-
-  def getMonthlyMeasure(set:String, month:String, measure:String, tipo:QueryType, values:Array[String]): DataFrame={
+  def getMonthlyMeasure(set:String, month:String, measure:String, tipo:QueryType, values:String*): DataFrame={
     val df: DataFrame = getDatas(set)
     if (tipo == QueryType.STATION) {
       return df.select(measure).filter("YearMonth=" + month + " AND WBAN=" + values(0))
@@ -121,8 +120,7 @@ object Starter {
       return df.join(stationOfInterest, "WBAN").select("WBAN",measure).filter("YearMonth=" + month)
     }
   }
-
-  def getMonthlyMeasureInPeriod(set: String, in: String, fin:String, measure: String, tipo: QueryType, values: Array[String]): DataFrame = {
+  def getMonthlyMeasureInPeriod(set: String, in: String, fin:String, measure: String, tipo: QueryType, values: String*): DataFrame = {
     val df: DataFrame = getDatas(set)
     if (tipo == QueryType.STATION) {
       return df.select("YearMonth",measure).filter("YearMonth<=" + fin +"YearMonth>="+ in + " AND WBAN=" + values(0))
@@ -139,7 +137,7 @@ object Starter {
   }
   def getReliabilityOfStation(set:String, station:String, measure: String) : Float ={
     val df: DataFrame = getDatas(set)
-    return df.filter("WBAN ='"+station+"' AND " + measure+"= 'M'").count().toFloat / df.filter("WBAN ='"+station+"'").count()
+    return Math.round((1- (df.filter("WBAN ='"+station+"' AND " + measure+"= 'M'").count().toFloat / df.filter("WBAN ='"+station+"'").count()))*100)
   }
 
   def getReliabilityOfStations(set:String, measure:String): DataFrame={
@@ -149,6 +147,27 @@ object Starter {
     return missingValue.join(other, "WBAN").withColumn("One",lit(1)).withColumn("Reliability", round((col("One") - col("NumberOfMissing").divide(col("NumberOfMeasures")))*100)).select("WBAN","Reliability")
   }
 
+  def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, values : String* ):Float={
+    val df = getMeasureInPeriod("precip",in,fin,"Precipitation", queryType, values(0),values(1))
+    val filtered :Long = df.filter("Precipitation>="+ threshold).count()
+    val unfiltered : Long = df.count()
+    return Math.round((filtered.toFloat/unfiltered)*100)
+  }
 
+  def getDistributionOfWheaterType(in:String,fin:String, stato:String, divcode:String):DataFrame={
+    val df = getMeasureInPeriod("hourly",in,fin,"WeatherType", QueryType.DIVCOD, stato, divcode)
+    val numMeasures:Long= df.count()
+    return df.groupBy("WeatherType").agg(round((functions.count("WBAN")/numMeasures.toFloat)*100).as("Distribution"))
+  }
 
+  def getWindChill(date:String, stato:String,divcod:String):DataFrame={
+    val windchillcalc = udf(calculateWindChill _)
+    //return getMeasureInHourlyPeriod(date,"0000","2355","",QueryType.DIVCOD,stato,divcod).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
+    val stationOfInterest = stations.select("WBAN").filter("State='" + stato + "' AND ClimateDivisionCode='" + divcod + "'")
+    return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
+  }
+
+  def calculateWindChill(temperature:Double,speed:Double):Double={
+    return 35.74+0.62*temperature-35.75*Math.pow(speed,0.16)+0.4275*temperature*Math.pow(speed,0.16)
+  }
 }

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Implementati query per recupero delle misurazioni di interesse per i vari dataset (eccetto i remarks).">
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Starter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Starter.scala" afterDir="false" />
@@ -118,7 +118,11 @@
       <workItem from="1674123209238" duration="595000" />
       <workItem from="1674204607609" duration="7814000" />
       <workItem from="1674228332586" duration="2513000" />
-      <workItem from="1674294025877" duration="3057000" />
+      <workItem from="1674294025877" duration="7097000" />
+      <workItem from="1674480163782" duration="10652000" />
+      <workItem from="1674507768762" duration="3185000" />
+      <workItem from="1674550942516" duration="2638000" />
+      <workItem from="1674576789875" duration="903000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -169,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674208393709</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)">
+      <created>1674297369472</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1674297369473</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,6 +194,7 @@
     <MESSAGE value="Riduzione ad un unica funzione per le queary di ricerca di valori di interesse per un giorno." />
     <MESSAGE value="Raggruppate tutte le query che svolgono funzionalità simili." />
     <MESSAGE value="Implementati query per recupero delle misurazioni di interesse per i vari dataset (eccetto i remarks)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementati query per recupero delle misurazioni di interesse per i vari dataset (eccetto i remarks)." />
+    <MESSAGE value="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)" />
   </component>
 </project>

@@ -29,8 +29,8 @@ public class app {
             values[0]=in.nextLine();
             Starter.getMeasureInPeriod(dataset,start,fin,misura,QueryType.STATE, values ).show();
         }*/
-
-        Starter.getReliabilityOfStations("dayly","Tmax").show();
+        values[0]="CO";
+        Starter.getWindChill("20130501","CO","2").show();
         System.out.println("----------\nFine esecuzione\n--------------");
     }
 }
