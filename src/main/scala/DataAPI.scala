@@ -5,8 +5,6 @@ import QueryType.TZONE
 import QueryType.DIVCOD
 import org.apache.spark.sql.functions.{col, lit, round, udf}
 
-
-
 object DataAPI {
   var dayly :DataFrame = null
   var monthly :DataFrame = null
@@ -139,14 +137,12 @@ object DataAPI {
     val df: DataFrame = getDatas(set)
     return Math.round((1- (df.filter("WBAN ='"+station+"' AND " + measure+"= 'M'").count().toFloat / df.filter("WBAN ='"+station+"'").count()))*100)
   }
-
   def getReliabilityOfStations(set:String, measure:String): DataFrame={
     val df: DataFrame = getDatas(set)
     val missingValue :DataFrame = df.filter( measure+"= 'M'").groupBy("WBAN").agg(functions.count(measure).as("NumberOfMissing"))
     val other: DataFrame= df.groupBy("WBAN").agg(functions.count(measure).as("NumberOfMeasures"))
     return missingValue.join(other, "WBAN").withColumn("One",lit(1)).withColumn("Reliability", round((col("One") - col("NumberOfMissing").divide(col("NumberOfMeasures")))*100)).select("WBAN","Reliability")
   }
-
   def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, values : String* ):Float={
     val df = getMeasureInPeriod("precip",in,fin,"Precipitation", queryType, values(0),values(1))
     val filtered :Long = df.filter("Precipitation>="+ threshold).count()
@@ -159,14 +155,12 @@ object DataAPI {
     val numMeasures:Long= df.count()
     return df.groupBy("WeatherType").agg(round((functions.count("WBAN")/numMeasures.toFloat)*100).as("Distribution"))
   }
-
   def getWindChill(date:String, stato:String,divcod:String):DataFrame={
     val windchillcalc = udf(calculateWindChill _)
     //return getMeasureInHourlyPeriod(date,"0000","2355","",QueryType.DIVCOD,stato,divcod).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
     val stationOfInterest = stations.select("WBAN").filter("State='" + stato + "' AND ClimateDivisionCode='" + divcod + "'")
     return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
   }
-
   def calculateWindChill(temperature:Double,speed:Double):Double={
     return 35.74+0.62*temperature-35.75*Math.pow(speed,0.16)+0.4275*temperature*Math.pow(speed,0.16)
   }

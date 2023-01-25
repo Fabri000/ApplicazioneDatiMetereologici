@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Implementate tutte le query per il dataframe.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/GUI/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Versione iniziale gui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/Starter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +62,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -125,7 +125,7 @@
       <workItem from="1674507768762" duration="3185000" />
       <workItem from="1674550942516" duration="2638000" />
       <workItem from="1674576789875" duration="1353000" />
-      <workItem from="1674578476068" duration="1312000" />
+      <workItem from="1674578476068" duration="4998000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -190,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674577810940</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Versione iniziale gui">
+      <created>1674580121280</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1674580121280</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +213,7 @@
     <MESSAGE value="Implementati query per recupero delle misurazioni di interesse per i vari dataset (eccetto i remarks)." />
     <MESSAGE value="Implementati metodi per calcolare l'affidabilità(per una misura) delle stazioni (basato sulla flag M)" />
     <MESSAGE value="Implementate tutte le query per il dataframe." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementate tutte le query per il dataframe." />
+    <MESSAGE value="Versione iniziale gui" />
+    <option name="LAST_COMMIT_MESSAGE" value="Versione iniziale gui" />
   </component>
 </project>
