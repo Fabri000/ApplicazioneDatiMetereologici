@@ -1,8 +1,8 @@
-
+import Enums.QueryType
 import org.apache.spark.sql.{DataFrame, SparkSession, functions}
-import QueryType.STATE
-import QueryType.TZONE
-import QueryType.DIVCOD
+import Enums.QueryType.STATE
+import Enums.QueryType.TZONE
+import Enums.QueryType.DIVCOD
 import org.apache.spark.sql.functions.{col, lit, round, udf}
 
 object DataAPI {
@@ -42,7 +42,6 @@ object DataAPI {
     remarks = r.reduce(_ union _)
     stations = s.reduce(_ union _).dropDuplicates()
   }
-
   def getDatas(dataframe:String): DataFrame ={
     val df = dataframe match {
       case "dayly"=> dayly
@@ -54,7 +53,6 @@ object DataAPI {
     }
     return df
   }
-
   def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType , values: String* ):DataFrame={
     val df: DataFrame = getDatas(set)
     if(tipo == QueryType.STATION){
@@ -70,7 +68,6 @@ object DataAPI {
       return df.join(stationOfInterest, "WBAN").select("WBAN",measure).filter("YearMonthDay =" + data)
     }
   }
-
   def getMeasureInPeriod(set: String, in: String, fin:String, measure:String, tipo: QueryType, values: String*): DataFrame = {
     val df: DataFrame = getDatas(set)
     var date="YearMonthDay"
@@ -149,7 +146,6 @@ object DataAPI {
     val unfiltered : Long = df.count()
     return Math.round((filtered.toFloat/unfiltered)*100)
   }
-
   def getDistributionOfWheaterType(in:String,fin:String, stato:String, divcode:String):DataFrame={
     val df = getMeasureInPeriod("hourly",in,fin,"WeatherType", QueryType.DIVCOD, stato, divcode)
     val numMeasures:Long= df.count()
@@ -157,11 +153,15 @@ object DataAPI {
   }
   def getWindChill(date:String, stato:String,divcod:String):DataFrame={
     val windchillcalc = udf(calculateWindChill _)
-    //return getMeasureInHourlyPeriod(date,"0000","2355","",QueryType.DIVCOD,stato,divcod).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
+    //return getMeasureInHourlyPeriod(date,"0000","2355","",Enums.QueryType.DIVCOD,stato,divcod).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
     val stationOfInterest = stations.select("WBAN").filter("State='" + stato + "' AND ClimateDivisionCode='" + divcod + "'")
     return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
   }
   def calculateWindChill(temperature:Double,speed:Double):Double={
     return 35.74+0.62*temperature-35.75*Math.pow(speed,0.16)+0.4275*temperature*Math.pow(speed,0.16)
+  }
+
+  def getStationsColumn(cols:String*):DataFrame={
+    return stations.select(cols.map(col): _*);
   }
 }
