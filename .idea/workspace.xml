@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 1.0">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Buttons/DashboardButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 1.1">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/QueryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,13 +93,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Scala REPL" type="ScalaScriptConsoleRunConfiguration" factoryName="Scala Console" temporary="true" show_console_on_std_err="false" show_console_on_std_out="false">
+      <module name="ApplicazioneDatiMetereologici" />
+      <option name="allowRunningInParallel" value="false" />
+      <option name="javaOptions" value="-Djline.terminal=NONE" />
+      <option name="myConsoleArgs" value="" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="workingDirectory" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.ApplicazioneDatiMetereologici" />
       <item itemvalue="Application.Starter" />
+      <item itemvalue="Scala REPL.Scala REPL" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ApplicazioneDatiMetereologici" />
+        <item itemvalue="Scala REPL.Scala REPL" />
         <item itemvalue="Application.Starter" />
       </list>
     </recent_temporary>
@@ -143,7 +158,14 @@
       <workItem from="1674721458023" duration="9598000" />
       <workItem from="1674732268893" duration="241000" />
       <workItem from="1674754770106" duration="2371000" />
-      <workItem from="1674827533934" duration="6090000" />
+      <workItem from="1674827533934" duration="8639000" />
+      <workItem from="1674853453957" duration="3993000" />
+      <workItem from="1674894385764" duration="5665000" />
+      <workItem from="1674900419215" duration="1907000" />
+      <workItem from="1674917366841" duration="719000" />
+      <workItem from="1674925085385" duration="7711000" />
+      <workItem from="1675001557210" duration="14044000" />
+      <workItem from="1675068427432" duration="4375000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -222,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674636013912</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Gui 1.1">
+      <created>1674834816401</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1674834816401</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,6 +269,7 @@
     <MESSAGE value="Implementate tutte le query per il dataframe." />
     <MESSAGE value="Versione iniziale gui" />
     <MESSAGE value="Gui 1.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gui 1.0" />
+    <MESSAGE value="Gui 1.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gui 1.1" />
   </component>
 </project>

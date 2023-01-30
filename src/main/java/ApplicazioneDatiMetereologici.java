@@ -1,4 +1,6 @@
+import DataApi.DataAPI;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
+import SingletonClasses.QueryInfo;
 import org.apache.spark.sql.SparkSession;
 
 
@@ -8,9 +10,10 @@ public class ApplicazioneDatiMetereologici  {
                 .master( "local")
                 .appName("Applicazione dati meteo")
                 .getOrCreate();
-
+        DataAPI.start(spark);
+        QueryInfo.getInstance();
         ApplicazioneDatiMetereologiciGUI.getInstance().setVisible(true);
-        //DataAPI.start(spark);
+
     }
 }
 
