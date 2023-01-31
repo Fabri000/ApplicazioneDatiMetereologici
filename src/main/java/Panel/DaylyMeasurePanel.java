@@ -1,6 +1,8 @@
 package Panel;
 
+import DataApi.DataAPI;
 import Enums.QueryType;
+import Panel.SubPanel.QueyTableVisualization;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 
@@ -22,6 +24,7 @@ public class DaylyMeasurePanel extends JPanel {
     private JCheckBox specificdata,periodindays,dataandhour;
     private JComboBox datain, datafin, hourin, hourfin;
     private JButton submitButton;
+    private JPanel queryResult=new JPanel();;
     public DaylyMeasurePanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates()); timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone()); stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
         this.setSize(new Dimension(1920,1080));
@@ -37,9 +40,8 @@ public class DaylyMeasurePanel extends JPanel {
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        JPanel p = new JPanel();
-        p.setSize(920,600);
-        this.add(p);
+        queryResult.setVisible(false);
+        this.add(queryResult);
     }
     class TypeAndMeasureSelectionPanel extends  JPanel{
         Map<String,String> possibleMeasures= Map.of(
@@ -277,7 +279,8 @@ public class DaylyMeasurePanel extends JPanel {
                     if(datainit==null) {JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");}
                     switch (type){
                         case STATE -> {
-
+                            queryResult.add( new QueyTableVisualization(measure+" per il giorno"+ datainit,  DataAPI.getMeasureByDay("dayly",datainit,measure,type,state)));
+                            queryResult.setVisible(true);
                         }
                         case STATION -> {
 

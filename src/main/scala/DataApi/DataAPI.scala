@@ -2,12 +2,12 @@ package DataApi
 
 import Enums.QueryType
 import org.apache.spark.sql.functions.{col, lit, round, udf}
-import org.apache.spark.sql.{DataFrame, SparkSession, functions}
-import spire.implicits.eqOps
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions}
 
-import java.{lang, util}
-import javax.ws.rs.QueryParam
-import scala.jdk.CollectionConverters.IterableHasAsJava
+import java.util
+import scala.jdk.CollectionConverters._
+
+
 
 object DataAPI {
   private var dayly :DataFrame = null
@@ -17,6 +17,7 @@ object DataAPI {
   private var remarks :DataFrame = null
   private var stations : DataFrame = null
   def start(spark: SparkSession )={
+    import spark.implicits
     val d= new Array[DataFrame](12)
     val m= new Array[DataFrame](12)
     val h= new Array[DataFrame](12)
@@ -56,19 +57,18 @@ object DataAPI {
     }
     return df
   }
-  def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType, param:String ):DataFrame={
+  def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType, param:String ): util.Map[String, String]={
     val df: DataFrame = getDatas(set)
-    if(tipo == QueryType.STATION){
-      return df.select(measure).filter("YearMonthDay="+data+" AND Name="+param)
+    val query = tipo match {
+      case QueryType.STATION => "Name="+ param
+      case QueryType.STATE => "State='" + param + "'"
+      case QueryType.TZONE => "TimeZone=" + param
     }
-    else{
-      val query = tipo match {
-        case QueryType.STATE => "State='" + param + "'"
-        case QueryType.TZONE => "TimeZone=" + param
-      }
-      val stationOfInterest = stations.select("Name").filter(query)
-      return df.join(stationOfInterest, "Name").select("Name",measure).filter("YearMonthDay =" + data)
-    }
+    val stationOfInterest = stations.select("WBAN", "Name").filter(query)
+    val ris : Dataset[Row] =  df.join(stationOfInterest, "WBAN").select("Name",measure).filter("YearMonthDay =" + data)
+    val m: scala.collection.mutable.Map[String,String] =  scala.collection.mutable.Map[String,String]()
+    ris.collect().map(row=> m.put(row.getString(0),row.getString(1)))
+    return m.asJava
   }
   def getMeasureInPeriod(set: String, in: String, fin:String, measure:String, tipo: QueryType, param: String): DataFrame = {
     val df: DataFrame = getDatas(set)
@@ -88,7 +88,7 @@ object DataAPI {
         case QueryType.STATION => "Name='"+ param+"'"
         case QueryType.STATE => "State='" + param + "'"
         case QueryType.TZONE => "TimeZone=" + param
-      }
+    }
     val stationOfInterest = stations.select("WBAN").filter(query).distinct()
     return df.join(stationOfInterest, "WBAN").select("WBAN","Date","Time",measure).filter("Date=" + data + " AND Time>=" + in + " AND Time<= "+fin)
 

@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 1.1">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 2.0">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueyTableVisualization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,11 +59,14 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/project/ApplicazioneDatiMetereologici&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/fabri/Downloads/jfreechart-demo-1.5.2-jar-with-dependencies.jar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -165,7 +165,10 @@
       <workItem from="1674917366841" duration="719000" />
       <workItem from="1674925085385" duration="7711000" />
       <workItem from="1675001557210" duration="14044000" />
-      <workItem from="1675068427432" duration="4375000" />
+      <workItem from="1675068427432" duration="9584000" />
+      <workItem from="1675078719439" duration="3937000" />
+      <workItem from="1675092019979" duration="4101000" />
+      <workItem from="1675154724151" duration="1938000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -251,7 +254,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674834816401</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Gui 2.0">
+      <created>1675072901299</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1675072901299</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,6 +280,7 @@
     <MESSAGE value="Versione iniziale gui" />
     <MESSAGE value="Gui 1.0" />
     <MESSAGE value="Gui 1.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gui 1.1" />
+    <MESSAGE value="Gui 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gui 2.0" />
   </component>
 </project>
