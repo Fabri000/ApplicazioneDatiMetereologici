@@ -3,5 +3,6 @@ package Enums;
 public enum QueryType {
     STATION,
     TZONE,
-    STATE
+    STATE,
+    ZONE
 }

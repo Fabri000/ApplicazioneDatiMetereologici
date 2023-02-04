@@ -1,17 +1,16 @@
 package SingletonClasses;
 import DataApi.DataAPI;
 
-import java.util.Map;
-
 public class QueryInfo {
     static QueryInfo instance=null;
     private String[] fasceorarie;
-    private String[] date, timezone,states,stations,divcode;
+    private String[] date, timezone,states,stations,zone;
     private QueryInfo(){
         date = DataAPI.getAllDates();
         timezone = DataAPI.getTimezone();
         states = DataAPI.getStates();
         stations = DataAPI.getStationsName();
+        zone = DataAPI.getZone();
         createFasceOrarie();
     }
     public static QueryInfo getInstance(){
@@ -48,7 +47,6 @@ public class QueryInfo {
     public String[] getTimezone() {
         return timezone;
     }
-
-    public String[] getDivcode() {return divcode;}
     public String[] getStations(){return stations;}
+    public String[] getZone(){return zone;}
 }

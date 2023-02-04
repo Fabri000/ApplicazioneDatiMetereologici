@@ -1,10 +1,14 @@
 package Panel;
 
 import DataApi.DataAPI;
+import DataApi.GraphCreator;
 import Enums.QueryType;
+import Exceptions.NoValuesForParamsException;
+import Panel.SubPanel.PeriodQueryTableVisualization;
 import Panel.SubPanel.QueyTableVisualization;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
+import org.knowm.xchart.XChartPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,30 +22,58 @@ import java.util.Map;
 public class DaylyMeasurePanel extends JPanel {
     private String measure;
     private QueryType type;
-    private String state, stationName, timezone, datainit, dataf, hourinit, hourf;
-    private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox;
+    private String state, stationName, timezone,zone, datainit, dataf, hourinit, hourf;
+    private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox, zoneselectionbox;
 
     private JCheckBox specificdata,periodindays,dataandhour;
     private JComboBox datain, datafin, hourin, hourfin;
-    private JButton submitButton;
+    private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult=new JPanel();;
     public DaylyMeasurePanel(){
-        stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates()); timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone()); stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
+        stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
+        timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
+        stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
+        zoneselectionbox= new JComboBox<String>(QueryInfo.getInstance().getZone());
         this.setSize(new Dimension(1920,1080));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setBorder(new EmptyBorder(50,100,0,100));
         this.add(new TypeAndMeasureSelectionPanel());
-        this.add( Box.createVerticalStrut(5));
         this.add(new TimePeriodSelectionPanel());
         this.add( new SelectionQueryParamsPanel());
-        JPanel submitPanel = new JPanel(); submitPanel.setPreferredSize( new Dimension(100,20));
+        JPanel submitPanel = new JPanel(); submitPanel.setSize( new Dimension(100,20));
         submitButton = new JButton("Cerca");
         submitButton.addActionListener(new submitButtonLister());
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
+        queryResult.setMaximumSize(new Dimension(1000,600));
         queryResult.setVisible(false);
         this.add(queryResult);
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
+        newResearchButton = new JButton("Nuova ricerca");
+        newResearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource().equals(newResearchButton)){
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                }
+            }
+        });
+        returnHomeButton=new JButton("Ritorna alla home");
+        returnHomeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(returnHomeButton)){
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
+                }
+            }
+        });
+        buttons.add( newResearchButton );
+        buttons.add(Box.createRigidArea(new Dimension(10,0)));
+        buttons.add( returnHomeButton);
+        this.add(buttons);
+        this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class TypeAndMeasureSelectionPanel extends  JPanel{
         Map<String,String> possibleMeasures= Map.of(
@@ -55,6 +87,7 @@ public class DaylyMeasurePanel extends JPanel {
                 "Velocità del vento","AvgSpeed"
         );
         Map<String, QueryType> typeOfQuery=Map.of(
+                "Zona", QueryType.ZONE,
                 "Stato", QueryType.STATE,
                 "Fuso orario",QueryType.TZONE,
                 "Stazione",QueryType.STATION
@@ -66,6 +99,8 @@ public class DaylyMeasurePanel extends JPanel {
             comboBoxListener = new CustomJComboBoxListener();
             this.setAlignmentX(CENTER_ALIGNMENT);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+            this.setBorder(new EmptyBorder(10,0,10,0));
+            this.setMaximumSize(new Dimension(920,20));
             JPanel p1 = new JPanel();
             p1.setSize(0,20);
             p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
@@ -109,6 +144,7 @@ public class DaylyMeasurePanel extends JPanel {
                             case STATE -> stateselectionbox.setEnabled(true);
                             case STATION -> stationselectionbox.setEnabled(true);
                             case TZONE -> timezoneselectionbox.setEnabled(true);
+                            case ZONE -> zoneselectionbox.setEnabled(true);
                         }
                         ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
                     }
@@ -120,9 +156,10 @@ public class DaylyMeasurePanel extends JPanel {
         ButtonGroup group = new ButtonGroup();
 
         public TimePeriodSelectionPanel(){
-
-            this.setSize(900,20);
             this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+            this.setAlignmentX(CENTER_ALIGNMENT);
+            this.setMaximumSize(new Dimension(920,20));
+            this.setBorder(new EmptyBorder(0,0,10,0));
             JPanel p1 = new JPanel();
             p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
             JLabel l1 = new JLabel("Seleziona l'arco temporale:");
@@ -227,32 +264,47 @@ public class DaylyMeasurePanel extends JPanel {
     }
     class SelectionQueryParamsPanel extends JPanel{
         public SelectionQueryParamsPanel(){
-            this.setSize(900,20);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-            JLabel l1 = new JLabel("Seleziona una regione:");
-            this.add(l1);
+            this.setAlignmentX(CENTER_ALIGNMENT);
+            this.setSize(1000,20);
+            this.setBorder(new EmptyBorder(0,0,10,0));
             SelectionQueryParamsListener listener = new SelectionQueryParamsListener();
             JLabel l2 = new JLabel("Seleziona una stazione:");
             this.add(l2);
+            this.add(Box.createRigidArea(new Dimension(10,0)));
             stationselectionbox.setSelectedItem(null);
-            stationselectionbox.setSize(300,20);
+            stationselectionbox.setMaximumSize(new Dimension(200,20));
             stationselectionbox.addItemListener(listener);
             stationselectionbox.setEnabled(false);
             this.add(stationselectionbox);
+            this.add(Box.createRigidArea(new Dimension(15,0)));
             JLabel l3 = new JLabel("Seleziona un fuso orario:");
             this.add(l3);
+            this.add(Box.createRigidArea(new Dimension(10,0)));
             timezoneselectionbox.setSelectedItem(null);
-            timezoneselectionbox.setSize(300,20);
             timezoneselectionbox.addItemListener(listener);
+            timezoneselectionbox.setMaximumSize(new Dimension(200,20));
             timezoneselectionbox.setEnabled(false);
             this.add(timezoneselectionbox);
+            this.add(Box.createRigidArea(new Dimension(15,0)));
             JLabel l4 = new JLabel("Seleziona uno stato:");
             this.add(l4);
+            this.add(Box.createRigidArea(new Dimension(10,0)));
             stateselectionbox.setSelectedItem(null);
-            stateselectionbox.setSize(300,20);
             stateselectionbox.addItemListener(listener);
+            stateselectionbox.setMaximumSize(new Dimension(200,20));
             stateselectionbox.setEnabled(false);
             this.add(stateselectionbox);
+            this.add(Box.createRigidArea(new Dimension(15,0)));
+            JLabel l5 = new JLabel("Seleziona una zona:");
+            this.add(l5);
+            this.add(Box.createRigidArea(new Dimension(10,0)));
+            zoneselectionbox.setSelectedItem(null);
+            zoneselectionbox.addItemListener(listener);
+            zoneselectionbox.setMaximumSize(new Dimension(200,20));
+            zoneselectionbox.setEnabled(false);
+            this.add(zoneselectionbox);
+
         }
         class SelectionQueryParamsListener implements ItemListener{
                 @Override
@@ -261,9 +313,10 @@ public class DaylyMeasurePanel extends JPanel {
                         submitButton.setEnabled(true);
                         JComboBox<String> source = (JComboBox<String>) e.getSource();
                         String val = source.getSelectedItem().toString();
-                        if(source.equals(timezoneselectionbox)) timezone=val;
-                        else if (source.equals(stateselectionbox)) state =val;
-                        else if (source.equals(stationName)) stationName = val;
+                        if(source.equals(timezoneselectionbox)) timezone = val;
+                        else if (source.equals(stateselectionbox)) state = val;
+                        else if (source.equals(stationselectionbox)) stationName = val.split("-")[0];
+                        else if (source.equals(zoneselectionbox)) zone=val;
                     }
                 }
         }
@@ -275,37 +328,78 @@ public class DaylyMeasurePanel extends JPanel {
                 if(measure == null){
                     JOptionPane.showMessageDialog(null, "Non hai selezionato la misura");
                 }
-                if(specificdata.isSelected()){
-                    if(datainit==null) {JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");}
-                    switch (type){
-                        case STATE -> {
-                            queryResult.add( new QueyTableVisualization(measure+" per il giorno"+ datainit,  DataAPI.getMeasureByDay("dayly",datainit,measure,type,state)));
-                            queryResult.setVisible(true);
-                        }
-                        case STATION -> {
-
-                        }
-                        case TZONE -> {
-
-                        }
+                if(specificdata.isSelected()) {
+                    if (datainit == null) {
+                        JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");
                     }
+                    try {
+                        switch (type) {
+                            case STATE -> {
+                                queryResult.add(new QueyTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, state)));
+                            }
+                            case STATION -> {
+                                queryResult.add(new QueyTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, stationName)));
+                            }
+                            case TZONE -> {
+                                queryResult.add(new QueyTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, timezone)));
+                            }
+                            case ZONE -> {
+                                queryResult.add(new QueyTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, zone)));
+                            }
+                        }
+                    } catch (NoValuesForParamsException ex) {
+                        JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                    }
+                    queryResult.setVisible(true);
                 }
                 else if ( periodindays.isSelected() ){
                     if((datainit==null || dataf == null) || (Integer.parseInt(datainit) > Integer.parseInt(dataf))){
                         JOptionPane.showMessageDialog(null, "Il periodo per cui vuoi ottenere le misurazioni non è valido");
                         datainit = null; dataf = null; datafin.setSelectedItem(null); datain.setSelectedItem(null);
                     }
-                    switch (type){
-                        case STATE -> {
-
-                        }
-                        case STATION -> {
-
-                        }
-                        case TZONE -> {
-
+                    try{
+                        System.out.println(measure);
+                        switch (type){
+                            case STATE -> {
+                                if(measure.equals("Sunset")|| measure.equals("Sunrise")) {
+                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly", datainit, dataf, measure, type, state);
+                                    queryResult.add(new PeriodQueryTableVisualization(ris, measure));
+                                }
+                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,state)));
+                            }
+                            case STATION -> {
+                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
+                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,stationName);
+                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
+                                }
+                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,stationName)));
+                            }
+                            case TZONE -> {
+                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
+                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,timezone);
+                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
+                                }
+                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,timezone)));
+                            }
+                            case ZONE -> {
+                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
+                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,zone);
+                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
+                                }
+                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,zone)));
+                            }
                         }
                     }
+                    catch (NoValuesForParamsException ex ){
+                        JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                    }
+                    catch (IllegalArgumentException ex){
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                    }
+                    queryResult.setVisible(true);
                 }
                 else if (dataandhour.isSelected()){
                     if((datainit==null || hourinit==null || hourf==null ) || (Integer.parseInt(hourinit) > Integer.parseInt(hourf))){
@@ -324,10 +418,10 @@ public class DaylyMeasurePanel extends JPanel {
 
                         }
                     }
+                    queryResult.setVisible(true);
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Non hai selezionato un periodo di tempo");
-
                 }
             }
         }

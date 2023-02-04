@@ -1,5 +1,6 @@
 package Panel.SubPanel;
 
+import Exceptions.NoValuesForParamsException;
 import org.apache.hadoop.shaded.org.eclipse.jetty.websocket.common.frames.DataFrame;
 import org.apache.spark.api.java.function.ForeachFunction;
 import org.apache.spark.api.java.function.MapFunction;
@@ -12,25 +13,29 @@ import scala.collection.Seq;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class QueyTableVisualization extends JPanel {
-    public  QueyTableVisualization(String title, Map<String,String> measures){
+    public  QueyTableVisualization(String measure, Map<String,String> measures) throws NoValuesForParamsException {
+        if(measures.keySet().size()==0) throw  new NoValuesForParamsException();
         this.setBorder(new EmptyBorder(50,100,0,100));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        JLabel panelTitle = new JLabel( title);
-        Map<String,String> m = new HashMap<>();
-        StringBuilder sb = new StringBuilder();
-        for (String k: m.keySet()
-             ) {
-           sb.append(k+" "+ m.get(k).substring(0,2)+":"+m.get(k).substring(2,4));
-           sb.append("\n");
+        Object[][] vals = new Object[measures.keySet().size()][2];
+        int i = 0;
+        for (String k: measures.keySet()) {
+            vals[i][0]=k;
+            if(measure.equals("Sunset")|| measure.equals("Sunrise")) {
+                String val = measures.get(k).toString();
+                vals[i][1]=val.substring(0,2)+":"+val.substring(2,4);
+            }
+            else  vals[i][1]=measures.get(k);
+            i++;
         }
-        JTextField table = new JTextField(sb.toString());
-        table.setEditable(false);
-        this.add(panelTitle);
-        this.add(table);
+        JTable ris = new JTable(new DefaultTableModel(vals, new String[]{"Location",measure}));
+        ris.setEnabled(false);
+        this.add(new JScrollPane(ris));
     }
 }

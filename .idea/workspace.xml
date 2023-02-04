@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 2.0">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueyTableVisualization.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 2.1">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Exceptions/NoValuesForParamsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Enums/QueryType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueyTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueyTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,11 +65,12 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/fabri/Downloads/jfreechart-demo-1.5.2-jar-with-dependencies.jar&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/xchart-3.8.2.jar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -168,7 +175,18 @@
       <workItem from="1675068427432" duration="9584000" />
       <workItem from="1675078719439" duration="3937000" />
       <workItem from="1675092019979" duration="4101000" />
-      <workItem from="1675154724151" duration="1938000" />
+      <workItem from="1675154724151" duration="11077000" />
+      <workItem from="1675182273034" duration="1131000" />
+      <workItem from="1675184604348" duration="5829000" />
+      <workItem from="1675241675428" duration="10110000" />
+      <workItem from="1675347294336" duration="14792000" />
+      <workItem from="1675374998447" duration="955000" />
+      <workItem from="1675376039739" duration="343000" />
+      <workItem from="1675412399834" duration="12841000" />
+      <workItem from="1675427207767" duration="488000" />
+      <workItem from="1675438721072" duration="3520000" />
+      <workItem from="1675458842379" duration="3195000" />
+      <workItem from="1675498597205" duration="8083000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -261,7 +279,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675072901299</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Gui 2.1">
+      <created>1675156721968</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675156721968</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +306,7 @@
     <MESSAGE value="Gui 1.0" />
     <MESSAGE value="Gui 1.1" />
     <MESSAGE value="Gui 2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gui 2.0" />
+    <MESSAGE value="Gui 2.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gui 2.1" />
   </component>
 </project>
