@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Dashboard extends JPanel {
-    private JButton d1= new DashboardButton("Dayly Reports");
-    private JButton d2 = new DashboardButton("Monthly Reports");
-    private JButton d3 = new DashboardButton("Precipitation Reports");
-    private JButton d4 = new DashboardButton("Wheater Type Reports");
-    private JButton d5 = new DashboardButton("Wind Chill Reports");
-    private JButton d6 = new DashboardButton("Station Relaiability Reports");
+    private JButton d1= new DashboardButton("Rapporti giornalieri");
+    private JButton d2 = new DashboardButton("Rapporti orari");
+    private JButton d3 = new DashboardButton("Rapporti mensili");
+    private JButton d4 = new DashboardButton("Informazioni meteorologiche");
+    private JButton d5 = new DashboardButton("Rapporti sull'affidabilità delle stazioni");
+    private JButton d6 = new DashboardButton("Rapporto sulle precipitazioni");
 
     public Dashboard(){
         this.setSize(new Dimension(1920,1080));
@@ -41,16 +41,16 @@ public class Dashboard extends JPanel {
                 ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
             }
             else if(e.getSource() == d2){
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
+            }
+            else if(e.getSource() == d3){
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
+            }
+            else if(e.getSource() == d4){
 
             }
-            else if(e.getSource() == d2){
-
-            }
-            else if(e.getSource() == d2){
-
-            }
-            else if(e.getSource() == d2){
-
+            else if(e.getSource() == d5){
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new ReliabilityPanel());
             }
             else{
 

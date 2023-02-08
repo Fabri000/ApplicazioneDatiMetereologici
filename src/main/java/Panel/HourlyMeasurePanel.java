@@ -1,11 +1,7 @@
 package Panel;
 
-import DataApi.DataAPI;
 import DataApi.GraphCreator;
 import Enums.QueryType;
-import Exceptions.NoValuesForParamsException;
-import Panel.SubPanel.PeriodQueryTableVisualization;
-import Panel.SubPanel.QueryTableVisualization;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 import org.knowm.xchart.XChartPanel;
@@ -19,16 +15,17 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Map;
 
-public class DaylyMeasurePanel extends JPanel {
+public class HourlyMeasurePanel extends JPanel {
     private String measure;
     private QueryType type;
-    private String state, stationName, timezone,zone, datainit, dataf;
+    private String state, stationName, timezone,zone, datainit, dataf, hourinit,hourf;
     private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox, zoneselectionbox;
-    private JCheckBox specificdata,periodindays;
-    private JComboBox datain, datafin;
+    private JCheckBox dataandhourperiod,periodindays;
+    private JComboBox datain, datafin, hourin,hourfin;
     private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult=new JPanel();
-    public DaylyMeasurePanel(){
+
+    public HourlyMeasurePanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
         stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
@@ -38,7 +35,7 @@ public class DaylyMeasurePanel extends JPanel {
         this.setBorder(new EmptyBorder(50,100,0,100));
         this.add(new TypeAndMeasureSelectionPanel());
         this.add(new TimePeriodSelectionPanel());
-        this.add( new SelectionQueryParamsPanel());
+        this.add(new SelectionQueryParamsPanel());
         JPanel submitPanel = new JPanel(); submitPanel.setSize( new Dimension(100,20));
         submitButton = new JButton("Cerca");
         submitButton.addActionListener(new submitButtonLister());
@@ -55,7 +52,7 @@ public class DaylyMeasurePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
                 }
             }
         });
@@ -74,17 +71,13 @@ public class DaylyMeasurePanel extends JPanel {
         this.add(buttons);
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
-
     class TypeAndMeasureSelectionPanel extends  JPanel{
         Map<String,String> possibleMeasures= Map.of(
-                "Temperatura Massima","Tmax",
-                "Temperatura Minima", "Tmin",
-                "Temperatura Media", "Tavg",
-                "Tramonto","Sunset",
-                "Alba","Sunrise",
-                "Precipitazioni Nevose","SnowFall",
-                "Pressione al livello del mare","SeaLevel",
-                "Velocità del vento","AvgSpeed"
+                "Temperatura","DryBulbCelsius",
+                "Visibilità","Visibility",
+                "Precipitazioni","HourlyPrecip",
+                "Pressione al livello del mare","SeaLevelPressure",
+                "Velocità del vento","WindSpeed"
         );
         Map<String, QueryType> typeOfQuery=Map.of(
                 "Zona", QueryType.ZONE,
@@ -164,14 +157,14 @@ public class DaylyMeasurePanel extends JPanel {
             JLabel l1 = new JLabel("Seleziona l'arco temporale:");
             p1.add(l1);
             ActionListener listener = new PeriodSelectionListener();
-            specificdata = new JCheckBox("Giorno");
-            specificdata.setSize(200,20);
-            specificdata.addActionListener(listener);
-            periodindays = new JCheckBox("Giorni");
+            dataandhourperiod = new JCheckBox("Giorno e Fascia oraria");
+            dataandhourperiod.setSize(200,20);
+            dataandhourperiod.addActionListener(listener);
+            periodindays = new JCheckBox("Periodo di giorni");
             periodindays.addActionListener(listener);
             periodindays.setSize(200,20);
-            p1.add(specificdata);p1.add(periodindays);
-            group.add(specificdata);group.add(periodindays);
+            p1.add(dataandhourperiod);p1.add(periodindays);
+            group.add(dataandhourperiod);group.add(periodindays);
             this.add(p1);
             JPanel p2 = new JPanel();
             p2.setLayout(new BoxLayout(p2,BoxLayout.X_AXIS));
@@ -186,18 +179,30 @@ public class DaylyMeasurePanel extends JPanel {
             datafin.setSize(200,20);
             datafin.addItemListener(listener1);
             datafin.setEnabled(false);
-            JLabel l2  = new JLabel("Seleziona una data iniziale:");
-            p2.add(l2);p2.add(datain);
-            JLabel l3  = new JLabel("Seleziona una data finale:");
-            p2.add(l3);p2.add(datafin);
+            hourin = new JComboBox(QueryInfo.getInstance().getFasceorarie());
+            hourin.setSelectedItem(null);
+            hourin.addItemListener(listener1);
+            hourin.setEnabled(false);
+            hourin.setSize(200,20);
+            hourfin = new JComboBox(QueryInfo.getInstance().getFasceorarie());
+            hourfin.setSelectedItem(null);
+            hourfin.addItemListener(listener1);
+            hourfin.setEnabled(false);
+            hourfin.setSize(200,20);
+            p2.add(new JLabel("Seleziona una data iniziale:"));p2.add(datain);
+            p2.add(new JLabel("Seleziona una data finale:"));p2.add(datafin);
+            p2.add(new JLabel("Selezione un'orario iniziale:")); p2.add(hourin);
+            p2.add(new JLabel("Selezione un'orario finale:")); p2.add(hourfin);
             this.add(p2);
         }
         class PeriodSelectionListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 JCheckBox source = (JCheckBox) e.getSource();
-                if(source.equals(specificdata)){
+                if(source.equals(dataandhourperiod)){
                     datain.setEnabled(true);
+                    hourin.setEnabled(true);
+                    hourfin.setEnabled(true);
                     datafin.setSelectedItem(null);
                     dataf=null;
                     datafin.setEnabled(false);
@@ -205,17 +210,26 @@ public class DaylyMeasurePanel extends JPanel {
                 else if (source.equals(periodindays)){
                     datain.setEnabled(true);
                     datafin.setEnabled(true);
+                    hourfin.setEnabled(false);
+                    hourfin.setSelectedItem(null);
+                    hourf = null;
+                    hourin.setEnabled(false);
+                    hourin.setSelectedItem(null);
+                    hourinit =null;
                 }
             }
         }
-        class TimeSelectionComboBoxListener implements ItemListener{
+        class TimeSelectionComboBoxListener implements ItemListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(source.equals(datain)) datainit=val;
-                    else if (source.equals(datafin)) dataf =val;
+                    val=val.replace(":","");
+                    if(source.equals(datain)) datainit = val;
+                    else if (source.equals(datafin)) dataf = val;
+                    else if (source.equals(hourin)) hourinit = val;
+                    else if (source.equals(hourfin)) hourf = val;
                 }
             }
         }
@@ -265,18 +279,18 @@ public class DaylyMeasurePanel extends JPanel {
 
         }
         class SelectionQueryParamsListener implements ItemListener{
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if(e.getStateChange()==ItemEvent.SELECTED){
-                        submitButton.setEnabled(true);
-                        JComboBox<String> source = (JComboBox<String>) e.getSource();
-                        String val = source.getSelectedItem().toString();
-                        if(source.equals(timezoneselectionbox)) timezone = val;
-                        else if (source.equals(stateselectionbox)) state = val;
-                        else if (source.equals(stationselectionbox)) stationName = val.split("-")[0];
-                        else if (source.equals(zoneselectionbox)) zone=val;
-                    }
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    submitButton.setEnabled(true);
+                    JComboBox<String> source = (JComboBox<String>) e.getSource();
+                    String val = source.getSelectedItem().toString();
+                    if(source.equals(timezoneselectionbox)) timezone = val;
+                    else if (source.equals(stateselectionbox)) state = val;
+                    else if (source.equals(stationselectionbox)) stationName = val.split("-")[0];
+                    else if (source.equals(zoneselectionbox)) zone=val;
                 }
+            }
         }
     }
     class  submitButtonLister implements ActionListener{
@@ -286,76 +300,43 @@ public class DaylyMeasurePanel extends JPanel {
                 if(measure == null){
                     JOptionPane.showMessageDialog(null, "Non hai selezionato la misura");
                 }
-                if(specificdata.isSelected()) {
-                    if (datainit == null) {
+                if(dataandhourperiod.isSelected()) {
+                    if (datainit == null || hourinit==null || hourf==null) {
                         JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");
                     }
-                    try {
-                        switch (type) {
-                            case STATE -> {
-                                queryResult.add(new QueryTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, state)));
-                            }
-                            case STATION -> {
-                                queryResult.add(new QueryTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, stationName)));
-                            }
-                            case TZONE -> {
-                                queryResult.add(new QueryTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, timezone)));
-                            }
-                            case ZONE -> {
-                                queryResult.add(new QueryTableVisualization(measure + " per il giorno " + datainit, DataAPI.getMeasureByDay("dayly", datainit, measure, type, zone)));
-                            }
+                    switch (type) {
+                        case STATE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getHourlyMeasureGraphForDateVal(datainit,hourinit,hourf,measure,type,state)));
                         }
-                    } catch (NoValuesForParamsException ex) {
-                        JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                        case STATION -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getHourlyMeasureGraphForDateVal(datainit,hourinit,hourf,measure,type,stationName)));
+                        }
+                        case TZONE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getHourlyMeasureGraphForDateVal(datainit,hourinit,hourf,measure,type,timezone)));
+                        }
+                        case ZONE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getHourlyMeasureGraphForDateVal(datainit,hourinit,hourf,measure,type,zone)));
+                        }
                     }
                     queryResult.setVisible(true);
                 }
-                else if ( periodindays.isSelected() ){
-                    if((datainit==null || dataf == null) || (Integer.parseInt(datainit) > Integer.parseInt(dataf))){
-                        JOptionPane.showMessageDialog(null, "Il periodo per cui vuoi ottenere le misurazioni non è valido");
-                        datainit = null; dataf = null; datafin.setSelectedItem(null); datain.setSelectedItem(null);
+                if(periodindays.isSelected()){
+                    if(datainit==null||dataf==null){
+                        JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");
                     }
-                    try{
-                        System.out.println(measure);
-                        switch (type){
-                            case STATE -> {
-                                if(measure.equals("Sunset")|| measure.equals("Sunrise")) {
-                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly", datainit, dataf, measure, type, state);
-                                    queryResult.add(new PeriodQueryTableVisualization(ris, measure));
-                                }
-                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,state)));
-                            }
-                            case STATION -> {
-                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
-                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,stationName);
-                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
-                                }
-                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,stationName)));
-                            }
-                            case TZONE -> {
-                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
-                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,timezone);
-                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
-                                }
-                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,timezone)));
-                            }
-                            case ZONE -> {
-                                if(measure.equals("Sunset")|| measure.equals("Sunrise")){
-                                    Object[][] ris = GraphCreator.getDaylyMeasureGraphForDateVal("dayly",datainit,dataf,measure,type,zone);
-                                    queryResult.add(new PeriodQueryTableVisualization(ris,measure));
-                                }
-                                else queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureGraphForDoubleVal("dayly",datainit,dataf,measure,type,zone)));
-                            }
+                    switch (type) {
+                        case STATE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureForHourlyPeriod(datainit,dataf,measure,type,state)));
                         }
-                    }
-                    catch (NoValuesForParamsException ex ){
-                        JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
-                    }
-                    catch (IllegalArgumentException ex){
-                        JOptionPane.showMessageDialog(null, ex.getMessage());
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
+                        case STATION -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureForHourlyPeriod(datainit,dataf,measure,type,stationName)));
+                        }
+                        case TZONE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureForHourlyPeriod(datainit,dataf,measure,type,timezone)));
+                        }
+                        case ZONE -> {
+                            queryResult.add(new XChartPanel<>(GraphCreator.getDaylyMeasureForHourlyPeriod(datainit,dataf,measure,type,zone)));
+                        }
                     }
                     queryResult.setVisible(true);
                 }

@@ -9,7 +9,6 @@ import com.datawizards.splot.api.implicits._
 import org.knowm.xchart.{QuickChart, SwingWrapper, XYChart}
 
 import java.util
-import java.util.{Date, GregorianCalendar}
 
 object DataAPI {
   private var dayly :DataFrame = null
@@ -75,36 +74,40 @@ object DataAPI {
   def getMeasureInPeriod(set: String, in: String, fin:String, measure:String, tipo: QueryType, param: String):DataFrame = {
     val df: DataFrame = getDatas(set)
     var date="YearMonthDay"
-    if(set=="hourly") date = "Date"
-    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param))
-    return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date , measure).filter("YearMonthDay>=" + in + " AND  YearMonthDay<=" + fin)
+    val stationOfInterest = stations.select("WBAN", "Location").filter(generateStationsQuery(tipo, param))
+    if(set=="hourly"){
+      date = "Date"
+      return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date ,"Time", measure).filter(date+">=" + in + " AND "+  date+"<=" + fin)
+    }
+    else {
+      return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date , measure).filter(date+">=" + in + " AND "+  date+"<=" + fin)
+    }
   }
   def getMeasureInHourlyPeriod(data: String, in: String, fin: String, measure: String, tipo: QueryType, param: String): DataFrame = {
     val df: DataFrame = getDatas("hourly")
-    val stationOfInterest = stations.select("WBAN").filter(generateStationsQuery(tipo, param)).distinct()
-    return df.join(stationOfInterest, "WBAN").select("Name","Date","Time",measure).filter("Date=" + data + " AND Time>=" + in + " AND Time<= "+fin)
+    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param)).distinct()
+    return df.join(stationOfInterest, "WBAN").select("WBAN","Location","Date","Time",measure).filter("Date=" + data + " AND Time>=" + in + " AND Time<= "+fin)
   }
-  def getMonthlyMeasure(set:String, month:String, measure:String, tipo:QueryType,param:String): DataFrame={
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter(generateStationsQuery(tipo, param))
-    return df.join(stationOfInterest, "WBAN").select("Name",measure).filter("YearMonth=" + month)
+  def getMonthlyMeasure( month:String, measure:String, tipo:QueryType,param:String): util.Map[String,String]={
+    val df: DataFrame = getDatas("monthly")
+    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param))
+    val ris : Dataset[Row] = df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonth=" + month).filter(col(measure).notEqual("-").and(col(measure).notEqual("M")).and(col(measure).isNotNull))
+    val m: scala.collection.mutable.Map[String, String] = scala.collection.mutable.Map[String, String]()
+    ris.collect().map(row => m.put(row.getString(0), row.getString(1)))
+    return m.asJava
   }
-  def getMonthlyMeasureInPeriod(set: String, in: String, fin:String, measure: String, tipo: QueryType, param:String): DataFrame = {
-    val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN").filter(generateStationsQuery(tipo, param))
-    return df.join(stationOfInterest, "WBAN").select("Name","YearMonth",measure).filter("YearMonth<=" + fin +"YearMonth>="+ in)
+  def getMonthlyMeasureInPeriod( in: String, fin:String, measure: String, tipo: QueryType, param:String): DataFrame = {
+    val df: DataFrame = getDatas("monthly")
+    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param))
+    return df.join(stationOfInterest, "WBAN").select("WBAN","Location","YearMonth",measure).filter("YearMonth <= " + fin +" AND YearMonth >= "+ in)
   }
-  def getReliabilityOfStation(set:String, station:String, measure: String) : Float ={
-    val df: DataFrame = getDatas(set)
-    var stationofinterest:String=null
-    stations.select("WBAN").filter("Name='"+ station+"'").collect().map(row=> stationofinterest = row.getString(0))
-    return Math.round((1- (df.filter("WBAN ='"+stationofinterest+"' AND " + measure+"= 'M'").count().toFloat / df.filter("WBAN ='"+stationofinterest+"'").count()))*100)
-  }
-  def getReliabilityOfStations(set:String, measure:String): DataFrame={
+  def getReliabilityOfStations(set:String, measure:String): Array[Array[String]]={
     val df: DataFrame = getDatas(set)
     val missingValue :DataFrame = df.filter( measure+"= 'M'").groupBy("WBAN").agg(functions.count(measure).as("NumberOfMissing"))
-    val other: DataFrame= df.groupBy("WBAN").agg(functions.count(measure).as("NumberOfMeasures"))
-    return missingValue.join(other, "WBAN").withColumn("One",lit(1)).withColumn("Reliability", round((col("One") - col("NumberOfMissing").divide(col("NumberOfMeasures")))*100)).select("WBAN","Reliability")
+    val other: DataFrame = df.groupBy("WBAN").agg(functions.count(measure).as("NumberOfMeasures"))
+    val ris : DataFrame = missingValue.join(other, "WBAN").withColumn("One",lit(1)).withColumn("Reliability", round((col("One") - col("NumberOfMissing").divide(col("NumberOfMeasures")))*100)).select("WBAN","Reliability")
+    val stationsName = getDatas("stations").select("WBAN","Location").dropDuplicates()
+    return ris.join(stationsName, "WBAN").select("Location","Reliability").collect().map(row => Array(row.getString(0),row.getDouble(1).toString))
   }
   def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, param:String ):Float={
     val df = getMeasureInPeriod("precip",in,fin,"Precipitation", queryType, param)
@@ -120,7 +123,7 @@ object DataAPI {
   def getWindChill(date:String, stato:String):DataFrame={
     val windchillcalc = udf(calculateWindChill _)
     val stationOfInterest = stations.select("WBAN").filter("State='" + stato )
-    return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindSpeed","WindChill")
+    return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindChill")
   }
   def calculateWindChill(temperature:Double,speed:Double):Double={
     return 35.74+0.62*temperature-35.75*Math.pow(speed,0.16)+0.4275*temperature*Math.pow(speed,0.16)
@@ -155,5 +158,7 @@ object DataAPI {
   def getTimezone(): Array[String] = {
     return stations.select("TimeZone").filter("TimeZone is not Null").distinct().sort().collect().map(row => row.getInt(0).toString())
   }
-
+  def getMonths():Array[String]={
+    return monthly.select("YearMonth").dropDuplicates().collect().map(row=>row.getInt(0).toString)
+  }
 }

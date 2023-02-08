@@ -4,13 +4,14 @@ import DataApi.DataAPI;
 public class QueryInfo {
     static QueryInfo instance=null;
     private String[] fasceorarie;
-    private String[] date, timezone,states,stations,zone;
+    private String[] date,months, timezone,states,stations,zone;
     private QueryInfo(){
         date = DataAPI.getAllDates();
         timezone = DataAPI.getTimezone();
         states = DataAPI.getStates();
         stations = DataAPI.getStationsName();
         zone = DataAPI.getZone();
+        months = DataAPI.getMonths();
         createFasceOrarie();
     }
     public static QueryInfo getInstance(){
@@ -49,4 +50,5 @@ public class QueryInfo {
     }
     public String[] getStations(){return stations;}
     public String[] getZone(){return zone;}
+    public String[] getMonths(){return months;}
 }
