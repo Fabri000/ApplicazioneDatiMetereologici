@@ -69,6 +69,20 @@ object GraphCreator {
     })
     return datas
   }
+
+  def getPrecipitationOverVals(in:String, fin:String,threshold:String, queryType: QueryType, param:String ): Array[Array[Object]] = {
+    val result = DataAPI.getPrecipitationOver(in, fin, threshold, queryType, param).collect()
+    var i = 0
+    val datas = new Array[Array[Object]](result.size)
+    result.foreach(row=>{
+      val r = new Array[Object](2)
+      r(0)= row.getString(0)
+      r(1)= row.getDouble(1).toString
+      datas(i)=r
+      i=i+1
+    })
+    return datas
+  }
   def getHourlyMeasureGraphForDateVal(data: String, in: String, fin: String, measure: String, tipo: QueryType, param: String): XYChart= {
     val values = getMeasureInHourlyPeriod(data, in, fin, measure, tipo, param).filter(col(measure).notEqual("-").and(col(measure).notEqual("M")).and(col(measure).isNotNull))
     values.show()
@@ -226,4 +240,6 @@ object GraphCreator {
     })
     return ris
   }
+
+
 }

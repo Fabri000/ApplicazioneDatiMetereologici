@@ -53,7 +53,7 @@ public class Dashboard extends JPanel {
                 ApplicazioneDatiMetereologiciGUI.getInstance().setView(new ReliabilityPanel());
             }
             else{
-
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new PrecipitationPanel());
             }
         }
     }

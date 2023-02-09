@@ -1,7 +1,7 @@
 package DataApi
 
 import Enums.QueryType
-import org.apache.spark.sql.functions.{col, lit, round, udf}
+import org.apache.spark.sql.functions.{col, count, lit, round, udf}
 import org.apache.spark.sql._
 
 import scala.jdk.CollectionConverters._
@@ -109,12 +109,23 @@ object DataAPI {
     val stationsName = getDatas("stations").select("WBAN","Location").dropDuplicates()
     return ris.join(stationsName, "WBAN").select("Location","Reliability").collect().map(row => Array(row.getString(0),row.getDouble(1).toString))
   }
-  def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, param:String ):Float={
+  //
+  def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, param:String ):DataFrame={
     val df = getMeasureInPeriod("precip",in,fin,"Precipitation", queryType, param)
-    val filtered :Long = df.filter("Precipitation>="+ threshold).count()
-    val unfiltered : Long = df.count()
-    return Math.round((filtered.toFloat/unfiltered)*100)
+    val filtered :DataFrame = df.filter("Precipitation>="+ threshold).groupBy("WBAN").agg(count("WBAN").as("Filtered"))
+    filtered.show()
+    val unfiltered : DataFrame = df.groupBy("WBAN").count()
+    unfiltered.show()
+    val calculate = udf( calculatePercentage _)
+    val partial:DataFrame = filtered.join(unfiltered,"WBAN").withColumn("Percentage", calculate(col("Filtered"),col("count")))
+    val stationsNames : DataFrame = getStationsOfInterest(queryType,param,"Location")
+    return partial.join(stationsNames,"WBAN").select("Location","Percentage")
   }
+
+  def calculatePercentage(over:Double, total: Double):Double={
+    return Math.round((over/total)*100)
+  }
+
   def getDistributionOfWheaterType(in:String,fin:String, stato:String):DataFrame={
     val df = getMeasureInPeriod("hourly",in,fin,"WeatherType", QueryType.STATE, stato)
     val numMeasures:Long= df.count()

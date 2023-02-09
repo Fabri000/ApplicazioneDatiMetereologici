@@ -3,6 +3,7 @@ package Panel;
 import DataApi.DataAPI;
 import Panel.SubPanel.ReliabilityTableVisualization;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
+import SingletonClasses.QueryInfo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -60,33 +61,7 @@ public class ReliabilityPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class DataSetSelectionPanel extends JPanel{
-        Map<String,String> monthlymeasures= Map.of(
-                "Temperatura Massima Media","AvgMaxTemp",
-                "Temperatura Minima Media","AvgMinTemp",
-                "Temperatura Media","AvgTemp",
-                "Pressione al livello del mare massima", "MaxSeaLevelPressure",
-                "Pressione al livello del mare minima","MinSeaLevelPressure",
-                "Precipitazioni","TotalMonthlyPrecip",
-                "Precipitazioni nevose", "TotalSnowfall",
-                "Velocità del vento","AvgWindSpeed"
-        );
-        Map<String,String> hourlymeasures= Map.of(
-                "Temperatura","DryBulbCelsius",
-                "Visibilità","Visibility",
-                "Precipitazioni","HourlyPrecip",
-                "Pressione al livello del mare","SeaLevelPressure",
-                "Velocità del vento","WindSpeed"
-        );
-        Map<String,String> daylymeasures= Map.of(
-                "Temperatura Massima","Tmax",
-                "Temperatura Minima", "Tmin",
-                "Temperatura Media", "Tavg",
-                "Tramonto","Sunset",
-                "Alba","Sunrise",
-                "Precipitazioni Nevose","SnowFall",
-                "Pressione al livello del mare","SeaLevel",
-                "Velocità del vento","AvgSpeed"
-        );
+
         ButtonGroup group = new ButtonGroup();
         public DataSetSelectionPanel(){
             this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -128,7 +103,7 @@ public class ReliabilityPanel extends JPanel {
                     set="hourly";
                     measure=null;
                     measureselector.removeAllItems();
-                    measureselector.setModel(new DefaultComboBoxModel(hourlymeasures.keySet().toArray(new String[0])));
+                    measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getHourlymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
@@ -136,7 +111,7 @@ public class ReliabilityPanel extends JPanel {
                     set="dayly";
                     measure=null;
                     measureselector.removeAllItems();
-                    measureselector.setModel(new DefaultComboBoxModel(daylymeasures.keySet().toArray(new String[0])));
+                    measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getDaylymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
@@ -144,7 +119,7 @@ public class ReliabilityPanel extends JPanel {
                     set="monthly";
                     measure=null;
                     measureselector.removeAllItems();
-                    measureselector.setModel(new DefaultComboBoxModel(monthlymeasures.keySet().toArray(new String[0])));
+                    measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getMonthlymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
@@ -157,9 +132,9 @@ public class ReliabilityPanel extends JPanel {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(set.equals("hourly")) measure = hourlymeasures.get(val);
-                    else if(set.equals("dayly")) measure = daylymeasures.get(val);
-                    else if (set.equals("monthly")) measure = monthlymeasures.get(val);
+                    if(set.equals("hourly")) measure = QueryInfo.getInstance().getHourlymeasures().get(val);
+                    else if(set.equals("dayly")) measure = QueryInfo.getInstance().getDaylymeasures().get(val);
+                    else if (set.equals("monthly")) measure = QueryInfo.getInstance().getMonthlymeasures().get(val);
                     submitButton.setEnabled(true);
                 }
             }

@@ -76,22 +76,6 @@ public class DaylyMeasurePanel extends JPanel {
     }
 
     class TypeAndMeasureSelectionPanel extends  JPanel{
-        Map<String,String> possibleMeasures= Map.of(
-                "Temperatura Massima","Tmax",
-                "Temperatura Minima", "Tmin",
-                "Temperatura Media", "Tavg",
-                "Tramonto","Sunset",
-                "Alba","Sunrise",
-                "Precipitazioni Nevose","SnowFall",
-                "Pressione al livello del mare","SeaLevel",
-                "Velocità del vento","AvgSpeed"
-        );
-        Map<String, QueryType> typeOfQuery=Map.of(
-                "Zona", QueryType.ZONE,
-                "Stato", QueryType.STATE,
-                "Fuso orario",QueryType.TZONE,
-                "Stazione",QueryType.STATION
-        );
         private JComboBox<String> measureSelector,typeOfQuerySelector;
         private CustomJComboBoxListener comboBoxListener;
 
@@ -106,7 +90,7 @@ public class DaylyMeasurePanel extends JPanel {
             p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
             JLabel l1  = new JLabel("Seleziona la misura di interesse:");
             p1.add(l1);
-            measureSelector = new JComboBox<>(possibleMeasures.keySet().toArray(new String[0]));
+            measureSelector = new JComboBox<>(QueryInfo.getInstance().getDaylymeasures().keySet().toArray(new String[0]));
             measureSelector.setSelectedItem(null);
             measureSelector.setAlignmentX(LEFT_ALIGNMENT);
             measureSelector.setSize(new Dimension(300,25));
@@ -119,7 +103,7 @@ public class DaylyMeasurePanel extends JPanel {
             p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
             JLabel l2 = new JLabel("Seleziona i parametri di interesse:");
             p2.add(l2);
-            typeOfQuerySelector = new JComboBox<>(typeOfQuery.keySet().toArray(new String[0]));
+            typeOfQuerySelector = new JComboBox<>(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             typeOfQuerySelector.setSelectedItem(null);
             typeOfQuerySelector.setAlignmentX(LEFT_ALIGNMENT);
             typeOfQuerySelector.setSize(new Dimension(300,25));
@@ -133,12 +117,12 @@ public class DaylyMeasurePanel extends JPanel {
                 if(e.getStateChange()== ItemEvent.SELECTED){
                     JComboBox source = (JComboBox) e.getSource();
                     if(source.equals(measureSelector)){
-                        measure = possibleMeasures.get(source.getSelectedItem());
+                        measure = QueryInfo.getInstance().getDaylymeasures().get(source.getSelectedItem());
                         measureSelector.setEnabled(false);
                         ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
                     }
                     else if (source.equals(typeOfQuerySelector)){
-                        type= typeOfQuery.get(source.getSelectedItem());
+                        type= QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem());
                         typeOfQuerySelector.setEnabled(false);
                         switch (type){
                             case STATE -> stateselectionbox.setEnabled(true);

@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 3.0">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/MonthlyQueryTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/ReliabilityTableVisualization.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 4.0">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryGraphVisualize.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueyTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" afterDir="false" />
@@ -206,7 +203,9 @@
       <workItem from="1675758263767" duration="9577000" />
       <workItem from="1675780008385" duration="12362000" />
       <workItem from="1675793067574" duration="220000" />
-      <workItem from="1675849468961" duration="4630000" />
+      <workItem from="1675849468961" duration="5624000" />
+      <workItem from="1675932855763" duration="6512000" />
+      <workItem from="1675956982305" duration="1281000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -313,7 +312,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675506863669</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Gui 4.0">
+      <created>1675854526170</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1675854526170</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -335,6 +341,7 @@
     <MESSAGE value="Gui 2.0" />
     <MESSAGE value="Gui 2.1" />
     <MESSAGE value="Gui 3.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gui 3.0" />
+    <MESSAGE value="Gui 4.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gui 4.0" />
   </component>
 </project>
