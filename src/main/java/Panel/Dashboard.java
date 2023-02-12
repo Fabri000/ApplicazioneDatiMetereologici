@@ -47,7 +47,7 @@ public class Dashboard extends JPanel {
                 ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
             }
             else if(e.getSource() == d4){
-
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new WeatherInfoPanel());
             }
             else if(e.getSource() == d5){
                 ApplicazioneDatiMetereologiciGUI.getInstance().setView(new ReliabilityPanel());

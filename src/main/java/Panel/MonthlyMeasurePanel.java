@@ -27,7 +27,7 @@ public class MonthlyMeasurePanel extends JPanel {
     private JCheckBox singlemonth, monthlyperiod;
     private JComboBox monthin, monthfin;
     private JButton submitButton, newResearchButton, returnHomeButton;
-    private JPanel queryResult=new JPanel();
+    private JPanel queryResult;
     public MonthlyMeasurePanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
@@ -45,7 +45,7 @@ public class MonthlyMeasurePanel extends JPanel {
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        queryResult.setMaximumSize(new Dimension(1000,600));
+        queryResult = new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
         JPanel buttons = new JPanel();
@@ -294,8 +294,12 @@ public class MonthlyMeasurePanel extends JPanel {
                     queryResult.setVisible(true);
                 }
                 if(monthlyperiod.isSelected()){
-                    if(monthinit==null || monthf==null){
-                        JOptionPane.showMessageDialog(null, "Non hai selezionato il mese per cui vuoi ottenere le misurazioni");
+                    if((monthinit==null || monthf==null)||(Integer.parseInt(monthinit)>Integer.parseInt(monthf))){
+                        JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
+                        monthinit=null;
+                        monthin.setSelectedItem(null);
+                        monthf=null;
+                        monthfin.setSelectedItem(null);
                     }
                     try {
                         switch (type) {

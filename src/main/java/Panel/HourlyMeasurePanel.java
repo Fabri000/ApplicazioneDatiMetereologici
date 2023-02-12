@@ -23,7 +23,7 @@ public class HourlyMeasurePanel extends JPanel {
     private JCheckBox dataandhourperiod,periodindays;
     private JComboBox datain, datafin, hourin,hourfin;
     private JButton submitButton, newResearchButton, returnHomeButton;
-    private JPanel queryResult=new JPanel();
+    private JPanel queryResult;
 
     public HourlyMeasurePanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
@@ -42,7 +42,7 @@ public class HourlyMeasurePanel extends JPanel {
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        queryResult.setMaximumSize(new Dimension(1000,600));
+        queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
         JPanel buttons = new JPanel();
@@ -291,6 +291,13 @@ public class HourlyMeasurePanel extends JPanel {
                     if (datainit == null || hourinit==null || hourf==null) {
                         JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");
                     }
+                    else if (Integer.parseInt(hourinit)>Integer.parseInt(hourf) & ! hourf.equals("0000")){
+                        JOptionPane.showMessageDialog(null, "La fascia oraria selezionata non è valida");
+                        hourin.setSelectedItem(null);
+                        hourinit=null;
+                        hourfin.setSelectedItem(null);
+                        hourf=null;
+                    }
                     switch (type) {
                         case STATE -> {
                             queryResult.add(new XChartPanel<>(GraphCreator.getHourlyMeasureGraphForDateVal(datainit,hourinit,hourf,measure,type,state)));
@@ -310,6 +317,13 @@ public class HourlyMeasurePanel extends JPanel {
                 if(periodindays.isSelected()){
                     if(datainit==null||dataf==null){
                         JOptionPane.showMessageDialog(null, "Non hai selezionato la data per cui vuoi ottenere le misurazioni");
+                    }
+                    else if (Integer.parseInt(datainit)>Integer.parseInt(dataf)) {
+                        JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
+                        datainit=null;
+                        datain.setSelectedItem(null);
+                        dataf=null;
+                        datafin.setSelectedItem(null);
                     }
                     switch (type) {
                         case STATE -> {

@@ -27,7 +27,7 @@ public class DaylyMeasurePanel extends JPanel {
     private JCheckBox specificdata,periodindays;
     private JComboBox datain, datafin;
     private JButton submitButton, newResearchButton, returnHomeButton;
-    private JPanel queryResult=new JPanel();
+    private JPanel queryResult;
     public DaylyMeasurePanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
@@ -39,13 +39,13 @@ public class DaylyMeasurePanel extends JPanel {
         this.add(new TypeAndMeasureSelectionPanel());
         this.add(new TimePeriodSelectionPanel());
         this.add( new SelectionQueryParamsPanel());
-        JPanel submitPanel = new JPanel(); submitPanel.setSize( new Dimension(100,20));
+        JPanel submitPanel = new JPanel(); submitPanel.setSize( new Dimension(100,40));
         submitButton = new JButton("Cerca");
         submitButton.addActionListener(new submitButtonLister());
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        queryResult.setMaximumSize(new Dimension(1000,600));
+        queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
         JPanel buttons = new JPanel();
@@ -84,16 +84,17 @@ public class DaylyMeasurePanel extends JPanel {
             this.setAlignmentX(CENTER_ALIGNMENT);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
             this.setBorder(new EmptyBorder(10,0,10,0));
-            this.setMaximumSize(new Dimension(920,20));
+            this.setMaximumSize(new Dimension(920,40));
             JPanel p1 = new JPanel();
             p1.setSize(0,20);
             p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
             JLabel l1  = new JLabel("Seleziona la misura di interesse:");
+            l1.setFont(new Font("Calibri",Font.BOLD,20));
             p1.add(l1);
             measureSelector = new JComboBox<>(QueryInfo.getInstance().getDaylymeasures().keySet().toArray(new String[0]));
             measureSelector.setSelectedItem(null);
             measureSelector.setAlignmentX(LEFT_ALIGNMENT);
-            measureSelector.setSize(new Dimension(300,25));
+            measureSelector.setSize(new Dimension(300,40));
             measureSelector.addItemListener(comboBoxListener);
             p1.add(measureSelector);
             this.add(p1);
@@ -102,11 +103,12 @@ public class DaylyMeasurePanel extends JPanel {
             p2.setSize(600,20);
             p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
             JLabel l2 = new JLabel("Seleziona i parametri di interesse:");
+            l2.setFont(new Font("Calibri",Font.BOLD,20));
             p2.add(l2);
             typeOfQuerySelector = new JComboBox<>(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             typeOfQuerySelector.setSelectedItem(null);
             typeOfQuerySelector.setAlignmentX(LEFT_ALIGNMENT);
-            typeOfQuerySelector.setSize(new Dimension(300,25));
+            typeOfQuerySelector.setSize(new Dimension(300,40));
             typeOfQuerySelector.addItemListener(comboBoxListener);
             p2.add(typeOfQuerySelector);
             this.add(p2);
@@ -141,7 +143,7 @@ public class DaylyMeasurePanel extends JPanel {
         public TimePeriodSelectionPanel(){
             this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
             this.setAlignmentX(CENTER_ALIGNMENT);
-            this.setMaximumSize(new Dimension(920,20));
+            this.setMaximumSize(new Dimension(920,40));
             this.setBorder(new EmptyBorder(0,0,10,0));
             JPanel p1 = new JPanel();
             p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
@@ -149,11 +151,11 @@ public class DaylyMeasurePanel extends JPanel {
             p1.add(l1);
             ActionListener listener = new PeriodSelectionListener();
             specificdata = new JCheckBox("Giorno");
-            specificdata.setSize(200,20);
+            specificdata.setSize(200,40);
             specificdata.addActionListener(listener);
             periodindays = new JCheckBox("Giorni");
             periodindays.addActionListener(listener);
-            periodindays.setSize(200,20);
+            periodindays.setSize(200,40);
             p1.add(specificdata);p1.add(periodindays);
             group.add(specificdata);group.add(periodindays);
             this.add(p1);
@@ -164,10 +166,10 @@ public class DaylyMeasurePanel extends JPanel {
             datain.setSelectedItem(null);
             datain.addItemListener(listener1);
             datain.setEnabled(false);
-            datain.setSize(200,20);
+            datain.setSize(200,40);
             datafin = new JComboBox(QueryInfo.getInstance().getDate());
             datafin.setSelectedItem(null);
-            datafin.setSize(200,20);
+            datafin.setSize(200,40);
             datafin.addItemListener(listener1);
             datafin.setEnabled(false);
             JLabel l2  = new JLabel("Seleziona una data iniziale:");
@@ -225,7 +227,7 @@ public class DaylyMeasurePanel extends JPanel {
             this.add(Box.createRigidArea(new Dimension(10,0)));
             timezoneselectionbox.setSelectedItem(null);
             timezoneselectionbox.addItemListener(listener);
-            timezoneselectionbox.setMaximumSize(new Dimension(200,20));
+            timezoneselectionbox.setMaximumSize(new Dimension(200,40));
             timezoneselectionbox.setEnabled(false);
             this.add(timezoneselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
@@ -234,7 +236,7 @@ public class DaylyMeasurePanel extends JPanel {
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stateselectionbox.setSelectedItem(null);
             stateselectionbox.addItemListener(listener);
-            stateselectionbox.setMaximumSize(new Dimension(200,20));
+            stateselectionbox.setMaximumSize(new Dimension(200,40));
             stateselectionbox.setEnabled(false);
             this.add(stateselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
@@ -243,10 +245,9 @@ public class DaylyMeasurePanel extends JPanel {
             this.add(Box.createRigidArea(new Dimension(10,0)));
             zoneselectionbox.setSelectedItem(null);
             zoneselectionbox.addItemListener(listener);
-            zoneselectionbox.setMaximumSize(new Dimension(200,20));
+            zoneselectionbox.setMaximumSize(new Dimension(200,40));
             zoneselectionbox.setEnabled(false);
             this.add(zoneselectionbox);
-
         }
         class SelectionQueryParamsListener implements ItemListener{
                 @Override

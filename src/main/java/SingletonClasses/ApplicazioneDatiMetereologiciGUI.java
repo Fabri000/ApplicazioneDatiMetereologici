@@ -5,7 +5,8 @@ import java.awt.*;
 import Panel.Dashboard;
 
 public class ApplicazioneDatiMetereologiciGUI extends JFrame {
-    static ApplicazioneDatiMetereologiciGUI instance = null;
+    static Font labelFont = new Font("Calibri",Font.BOLD,20);
+    private static ApplicazioneDatiMetereologiciGUI instance = null;
     JPanel view;
     private ApplicazioneDatiMetereologiciGUI(){
         setTitle("Applicazione Dati metereologici");
@@ -27,4 +28,5 @@ public class ApplicazioneDatiMetereologiciGUI extends JFrame {
         this.setContentPane(view);
         repaint();
     }
+    public Font getLabelFont(){ return labelFont;}
 }

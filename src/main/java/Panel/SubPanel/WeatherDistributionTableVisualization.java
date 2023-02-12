@@ -1,16 +1,14 @@
 package Panel.SubPanel;
 
-import Exceptions.NoValuesForParamsException;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class ReliabilityTableVisualization extends JPanel {
+public class WeatherDistributionTableVisualization extends JPanel {
 
-    public ReliabilityTableVisualization(Object[][] values){
+    public WeatherDistributionTableVisualization(Object[][] values){
         this.setLayout(new BorderLayout());
-        JTable t = new JTable(new DefaultTableModel(values, new String[]{"Stazione","Affidabilità"}));
+        JTable t = new JTable(new DefaultTableModel(values, new String[]{"Tipo meteo","percentuale giorni"}));
         t.setEnabled(false);
         t.setFillsViewportHeight(false);
         JScrollPane p = new JScrollPane(t);

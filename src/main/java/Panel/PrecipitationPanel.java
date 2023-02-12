@@ -1,6 +1,7 @@
 package Panel;
 import DataApi.GraphCreator;
 import Enums.QueryType;
+import Exceptions.NoValuesForParamsException;
 import Panel.SubPanel.PrecipitationTableVisualization;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
@@ -20,7 +21,7 @@ public class PrecipitationPanel extends JPanel {
     private JComboBox datain,datafin,thresholdselector;
     private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox, zoneselectionbox;
     private JButton submitButton, newResearchButton, returnHomeButton;
-    private JPanel queryResult=new JPanel();
+    private JPanel queryResult;
     public PrecipitationPanel(){
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
@@ -39,7 +40,7 @@ public class PrecipitationPanel extends JPanel {
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        queryResult.setMaximumSize(new Dimension(1000,600));
+        queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
         JPanel buttons = new JPanel();
@@ -243,19 +244,27 @@ public class PrecipitationPanel extends JPanel {
             if(threshold==null){
                 JOptionPane.showMessageDialog(null, "Non hai selezionato un valore minimo per le precipitazioni");
             }
+            Object[][] ris ;
             switch (type) {
                 case STATE -> {
-                    queryResult.add( new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,state)));
+                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,state);
                 }
                 case STATION -> {
-                    queryResult.add( new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,stationName)));
+                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,stationName);
                 }
                 case TZONE -> {
-                    queryResult.add( new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,timezone)));
+                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,timezone);
                 }
                 case ZONE -> {
-                    queryResult.add( new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,zone)));
+                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,zone);
                 }
+            }
+            try {
+                queryResult.add(new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai, dataf, threshold, type, zone)));
+            }
+            catch( NoValuesForParamsException ex){
+                JOptionPane.showMessageDialog(null, "Non ci sono misurazioni valide");
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new PrecipitationPanel());
             }
             queryResult.setVisible(true);
         }

@@ -131,10 +131,10 @@ object DataAPI {
     val numMeasures:Long= df.count()
     return df.groupBy("WeatherType").agg(round((functions.count("WBAN")/numMeasures.toFloat)*100).as("Distribution"))
   }
-  def getWindChill(date:String, stato:String):DataFrame={
+  def getWindChill(date:String, queryType: QueryType, param:String):DataFrame={
     val windchillcalc = udf(calculateWindChill _)
-    val stationOfInterest = stations.select("WBAN").filter("State='" + stato )
-    return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Date",col("Time").toString(),"DryBulbCelsius","WindChill")
+    val stationOfInterest = getStationsOfInterest(queryType,param,"Location")
+    return getDatas("hourly").join(stationOfInterest, "WBAN").filter("Date=" + date ).withColumn("WindChill", windchillcalc(col("DryBulbCelsius"),col("WindSpeed"))).select("WBAN","Location","Date",col("Time").toString(),"WindChill")
   }
   def calculateWindChill(temperature:Double,speed:Double):Double={
     return 35.74+0.62*temperature-35.75*Math.pow(speed,0.16)+0.4275*temperature*Math.pow(speed,0.16)

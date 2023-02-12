@@ -11,7 +11,6 @@ public class MonthlyQueryTable extends JPanel {
 
     public MonthlyQueryTable(Map<String,String> measures, String searched) throws NoValuesForParamsException{
         if(measures.keySet().size()==0) throw  new NoValuesForParamsException();
-        this.setBorder(new EmptyBorder(50,100,0,100));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         Object[][] vals = new Object[measures.keySet().size()][2];
         int i = 0;

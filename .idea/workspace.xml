@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Gui 4.0">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Inserite le misure possibili per i vari dataset nella classe QueryInfo">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/WeatherDistributionTableVisualization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
@@ -13,7 +14,12 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/MonthlyQueryTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/MonthlyQueryTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/ReliabilityTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/ReliabilityTableVisualization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" afterDir="false" />
     </list>
@@ -206,6 +212,10 @@
       <workItem from="1675849468961" duration="5624000" />
       <workItem from="1675932855763" duration="6512000" />
       <workItem from="1675956982305" duration="1281000" />
+      <workItem from="1675960196808" duration="58000" />
+      <workItem from="1675963577317" duration="449000" />
+      <workItem from="1676019415113" duration="8778000" />
+      <workItem from="1676194200925" duration="1247000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -319,7 +329,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675854526170</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Inserite le misure possibili per i vari dataset nella classe QueryInfo">
+      <created>1675960242592</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1675960242592</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,6 +359,7 @@
     <MESSAGE value="Gui 2.1" />
     <MESSAGE value="Gui 3.0" />
     <MESSAGE value="Gui 4.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gui 4.0" />
+    <MESSAGE value="Inserite le misure possibili per i vari dataset nella classe QueryInfo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inserite le misure possibili per i vari dataset nella classe QueryInfo" />
   </component>
 </project>

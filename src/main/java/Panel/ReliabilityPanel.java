@@ -12,14 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Map;
 
 public class ReliabilityPanel extends JPanel {
     private String measure,set;
     private JCheckBox dayly,hourly,monthly;
     private JComboBox measureselector;
     private JButton submitButton, newResearchButton, returnHomeButton;
-    private JPanel queryResult=new JPanel();
+    private JPanel queryResult;
     public ReliabilityPanel(){
         this.setSize(new Dimension(1920,1080));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -31,7 +30,7 @@ public class ReliabilityPanel extends JPanel {
         submitButton.setEnabled(false);
         submitPanel.add(submitButton);
         this.add(submitPanel);
-        queryResult.setMaximumSize(new Dimension(1000,600));
+        queryResult = new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
         JPanel buttons = new JPanel();
