@@ -2,7 +2,10 @@ package Panel;
 import DataApi.GraphCreator;
 import Enums.QueryType;
 import Exceptions.NoValuesForParamsException;
+import Exceptions.UncompleteQueryParamInitialization;
+import Exceptions.WrongDateInitialization;
 import Panel.SubPanel.PrecipitationTableVisualization;
+import Query.PrecipitationQueryParams;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 import org.knowm.xchart.XChartPanel;
@@ -16,13 +19,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class PrecipitationPanel extends JPanel {
-    String datai,dataf,threshold,state, stationName, timezone,zone;
-    private QueryType type;
+    private PrecipitationQueryParams params;
     private JComboBox datain,datafin,thresholdselector;
     private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox, zoneselectionbox;
     private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult;
     public PrecipitationPanel(){
+        params = new PrecipitationQueryParams();
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
         stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
@@ -86,7 +89,7 @@ public class PrecipitationPanel extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED){
-                    threshold = thresholdselector.getSelectedItem().toString();
+                  params.setThreshold(thresholdselector.getSelectedItem().toString());
                 }
             }
         }
@@ -122,9 +125,9 @@ public class PrecipitationPanel extends JPanel {
                     String val = source.getSelectedItem().toString();
                     val=val.replace(":","");
                     if(source.equals(datain)){
-                        datai = val;
+                        params.setDatai(val);
                     } else if (source.equals(datafin)) {
-                        dataf = val;
+                        params.setDataf(val);
                     }
                 }
             }
@@ -155,9 +158,9 @@ public class PrecipitationPanel extends JPanel {
                 if(e.getStateChange()== ItemEvent.SELECTED){
                     JComboBox source = (JComboBox) e.getSource();
                     if (source.equals(typeOfQuerySelector)){
-                        type= QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem());
+                        params.setType(QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem()));
                         typeOfQuerySelector.setEnabled(false);
-                        switch (type){
+                        switch (params.getType()){
                             case STATE -> stateselectionbox.setEnabled(true);
                             case STATION -> stationselectionbox.setEnabled(true);
                             case TZONE -> timezoneselectionbox.setEnabled(true);
@@ -219,10 +222,8 @@ public class PrecipitationPanel extends JPanel {
                     submitButton.setEnabled(true);
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(source.equals(timezoneselectionbox)) timezone = val;
-                    else if (source.equals(stateselectionbox)) state = val;
-                    else if (source.equals(stationselectionbox)) stationName = val.split("-")[0];
-                    else if (source.equals(zoneselectionbox)) zone=val;
+                    if (source.equals(stationselectionbox)) params.setParam(val.split("-")[0]);
+                    else params.setParam(val);
                 }
             }
         }
@@ -231,39 +232,19 @@ public class PrecipitationPanel extends JPanel {
     class  submitButtonLister implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(datai==null || dataf==null){
-                JOptionPane.showMessageDialog(null, "Non hai selezionato correttamente un periodo");
-            }
-            if(Integer.parseInt(datai)>Integer.parseInt(dataf)){
-                JOptionPane.showMessageDialog(null, "Periodo non valido");
-                datai=null;
-                datain.setSelectedItem(null);
-                dataf=null;
-                datafin.setSelectedItem(null);
-            }
-            if(threshold==null){
-                JOptionPane.showMessageDialog(null, "Non hai selezionato un valore minimo per le precipitazioni");
-            }
-            Object[][] ris ;
-            switch (type) {
-                case STATE -> {
-                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,state);
-                }
-                case STATION -> {
-                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,stationName);
-                }
-                case TZONE -> {
-                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,timezone);
-                }
-                case ZONE -> {
-                    ris =GraphCreator.getPrecipitationOverVals(datai,dataf,threshold,type,zone);
-                }
-            }
             try {
-                queryResult.add(new PrecipitationTableVisualization(GraphCreator.getPrecipitationOverVals(datai, dataf, threshold, type, zone)));
-            }
-            catch( NoValuesForParamsException ex){
-                JOptionPane.showMessageDialog(null, "Non ci sono misurazioni valide");
+                params.verify();
+                queryResult.add(params.createGraph());
+            } catch (UncompleteQueryParamInitialization ex) {
+                JOptionPane.showMessageDialog(null, "Alcuni parametri della query non sono stati inizializati");
+            } catch (WrongDateInitialization ex) {
+                JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
+                params.setDatai(null);
+                datain.setSelectedItem(null);
+                params.setDataf(null);
+                datafin.setSelectedItem(null);
+            } catch (NoValuesForParamsException ex) {
+                JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
                 ApplicazioneDatiMetereologiciGUI.getInstance().setView(new PrecipitationPanel());
             }
             queryResult.setVisible(true);

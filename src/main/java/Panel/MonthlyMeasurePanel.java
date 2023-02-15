@@ -3,9 +3,13 @@ package Panel;
 import DataApi.DataAPI;
 import DataApi.DataAPI$;
 import DataApi.GraphCreator;
+import Enums.QueryPeriod;
 import Enums.QueryType;
 import Exceptions.NoValuesForParamsException;
+import Exceptions.UncompleteQueryParamInitialization;
+import Exceptions.WrongDateInitialization;
 import Panel.SubPanel.MonthlyQueryTable;
+import Query.MonthlyQueryParams;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 import org.knowm.xchart.XChartPanel;
@@ -20,15 +24,14 @@ import java.awt.event.ItemListener;
 import java.util.Map;
 
 public class MonthlyMeasurePanel extends JPanel {
-    private String measure;
-    private QueryType type;
-    private String state, stationName, timezone,zone, monthinit, monthf;
+    private MonthlyQueryParams params;
     private JComboBox  stateselectionbox, timezoneselectionbox, stationselectionbox, zoneselectionbox;
     private JCheckBox singlemonth, monthlyperiod;
     private JComboBox monthin, monthfin;
     private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult;
     public MonthlyMeasurePanel(){
+        params = new MonthlyQueryParams();
         stateselectionbox =new JComboBox<String>(QueryInfo.getInstance().getStates());
         timezoneselectionbox=new JComboBox<String>(QueryInfo.getInstance().getTimezone());
         stationselectionbox=new JComboBox<String>(QueryInfo.getInstance().getStations());
@@ -116,14 +119,14 @@ public class MonthlyMeasurePanel extends JPanel {
                 if(e.getStateChange()== ItemEvent.SELECTED){
                     JComboBox source = (JComboBox) e.getSource();
                     if(source.equals(measureSelector)){
-                        measure = QueryInfo.getInstance().getMonthlymeasures().get(source.getSelectedItem());
+                        params.setMeasure( QueryInfo.getInstance().getMonthlymeasures().get(source.getSelectedItem()));
                         measureSelector.setEnabled(false);
                         ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
                     }
                     else if (source.equals(typeOfQuerySelector)){
-                        type= QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem());
+                        params.setType(QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem()));
                         typeOfQuerySelector.setEnabled(false);
-                        switch (type){
+                        switch (params.getType()){
                             case STATE -> stateselectionbox.setEnabled(true);
                             case STATION -> stationselectionbox.setEnabled(true);
                             case TZONE -> timezoneselectionbox.setEnabled(true);
@@ -181,10 +184,12 @@ public class MonthlyMeasurePanel extends JPanel {
                 if(source.equals(singlemonth)){
                     monthin.setEnabled(true);
                     monthfin.setSelectedItem(null);
-                    monthf =null;
+                    params.setMonthf(null);
                     monthfin.setEnabled(false);
+                    params.setPeriod(QueryPeriod.SINGLE_MONTH);
                 }
                 else if (source.equals(monthlyperiod)){
+                    params.setPeriod(QueryPeriod.PERIOD_MONTHS);
                     monthin.setEnabled(true);
                     monthfin.setEnabled(true);
                 }
@@ -196,8 +201,8 @@ public class MonthlyMeasurePanel extends JPanel {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(source.equals(monthin)) monthinit = val;
-                    else if (source.equals(monthfin)) monthf = val;
+                    if(source.equals(monthin)) params.setMonthi(val);
+                    else if (source.equals(monthfin)) params.setMonthf(val);
                 }
             }
         }
@@ -252,10 +257,8 @@ public class MonthlyMeasurePanel extends JPanel {
                     submitButton.setEnabled(true);
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(source.equals(timezoneselectionbox)) timezone = val;
-                    else if (source.equals(stateselectionbox)) state = val;
-                    else if (source.equals(stationselectionbox)) stationName = val.split("-")[0];
-                    else if (source.equals(zoneselectionbox)) zone=val;
+                    if (source.equals(stationselectionbox)) params.setParam(val.split("-")[0]);
+                    else params.setParam(val);
                 }
             }
         }
@@ -264,65 +267,23 @@ public class MonthlyMeasurePanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(submitButton)){
-                if(measure == null){
-                    JOptionPane.showMessageDialog(null, "Non hai selezionato la misura");
+                try{
+                    params.verify();
+                    queryResult.add(params.createGraph());
+
+                } catch (UncompleteQueryParamInitialization ex) {
+                    JOptionPane.showMessageDialog(null, "Alcuni parametri della query non sono stati inizializati");
+                } catch (WrongDateInitialization ex) {
+                    JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
+                    params.setMonthi(null);
+                    monthin.setSelectedItem(null);
+                    params.setMonthf(null);
+                    monthfin.setSelectedItem(null);
+                } catch (NoValuesForParamsException ex) {
+                    JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
                 }
-                if(singlemonth.isSelected()){
-                    if(monthinit==null){
-                        JOptionPane.showMessageDialog(null, "Non hai selezionato il mese per cui vuoi ottenere le misurazioni");
-                    }
-                    try {
-                        switch (type) {
-                            case STATE -> {
-                                queryResult.add(new MonthlyQueryTable(DataAPI.getMonthlyMeasure(monthinit, measure, type, state),measure));
-                            }
-                            case STATION -> {
-                                queryResult.add(new MonthlyQueryTable(DataAPI.getMonthlyMeasure(monthinit, measure, type, stationName),measure));
-                            }
-                            case TZONE -> {
-                                queryResult.add(new MonthlyQueryTable(DataAPI.getMonthlyMeasure(monthinit, measure, type, timezone),measure));
-                            }
-                            case ZONE -> {
-                                queryResult.add(new MonthlyQueryTable(DataAPI.getMonthlyMeasure(monthinit, measure, type, zone),measure));
-                            }
-                        }
-                    }
-                    catch (NoValuesForParamsException ex){
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
-                        JOptionPane.showMessageDialog(null, "Nessuna misurazione valida per il periodo scelto");
-                    }
-                    queryResult.setVisible(true);
-                }
-                if(monthlyperiod.isSelected()){
-                    if((monthinit==null || monthf==null)||(Integer.parseInt(monthinit)>Integer.parseInt(monthf))){
-                        JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
-                        monthinit=null;
-                        monthin.setSelectedItem(null);
-                        monthf=null;
-                        monthfin.setSelectedItem(null);
-                    }
-                    try {
-                        switch (type) {
-                            case STATE -> {
-                                queryResult.add(new XChartPanel<>(GraphCreator.getMonthlyPeriodMeasures(monthinit, monthf, measure, type, state)));
-                            }
-                            case STATION -> {
-                                queryResult.add(new XChartPanel<>(GraphCreator.getMonthlyPeriodMeasures(monthinit, monthf, measure, type, stationName)));
-                            }
-                            case TZONE -> {
-                                queryResult.add(new XChartPanel<>(GraphCreator.getMonthlyPeriodMeasures(monthinit, monthf, measure, type, timezone)));
-                            }
-                            case ZONE -> {
-                                queryResult.add(new XChartPanel<>(GraphCreator.getMonthlyPeriodMeasures(monthinit, monthf, measure, type, zone)));
-                            }
-                        }
-                    }
-                    catch (IllegalArgumentException ex){
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
-                        JOptionPane.showMessageDialog(null, "Nessuna misurazione valida per il periodo scelto");
-                    }
-                    queryResult.setVisible(true);
-                }
+                queryResult.setVisible(true);
             }
         }
     }

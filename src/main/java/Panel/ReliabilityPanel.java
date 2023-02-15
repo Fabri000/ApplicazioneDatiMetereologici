@@ -1,7 +1,11 @@
 package Panel;
 
 import DataApi.DataAPI;
+import Exceptions.NoValuesForParamsException;
+import Exceptions.UncompleteQueryParamInitialization;
+import Exceptions.WrongDateInitialization;
 import Panel.SubPanel.ReliabilityTableVisualization;
+import Query.ReliabilityQueryParams;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 
@@ -14,12 +18,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class ReliabilityPanel extends JPanel {
-    private String measure,set;
+    private ReliabilityQueryParams params;
     private JCheckBox dayly,hourly,monthly;
     private JComboBox measureselector;
     private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult;
     public ReliabilityPanel(){
+        params=new ReliabilityQueryParams();
         this.setSize(new Dimension(1920,1080));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setBorder(new EmptyBorder(50,100,0,100));
@@ -99,29 +104,30 @@ public class ReliabilityPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 JCheckBox source = (JCheckBox) e.getSource();
                 if(e.getSource().equals(hourly)){
-                    set="hourly";
-                    measure=null;
+                    params.setSet("hourly");
+                    params.setParam(null);
                     measureselector.removeAllItems();
                     measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getHourlymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
                 else if(e.getSource().equals(dayly)){
-                    set="dayly";
-                    measure=null;
+                    params.setSet("dayly");
+                    params.setParam(null);
                     measureselector.removeAllItems();
                     measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getDaylymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
                 else if (e.getSource().equals(monthly)) {
-                    set="monthly";
-                    measure=null;
+                    params.setSet("monthly");
+                    params.setParam(null);
                     measureselector.removeAllItems();
                     measureselector.setModel(new DefaultComboBoxModel(QueryInfo.getInstance().getMonthlymeasures().keySet().toArray(new String[0])));
                     measureselector.setEnabled(true);
                     measureselector.setSelectedItem(null);
                 }
+                submitButton.setEnabled(false);
             }
         }
 
@@ -131,9 +137,9 @@ public class ReliabilityPanel extends JPanel {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(set.equals("hourly")) measure = QueryInfo.getInstance().getHourlymeasures().get(val);
-                    else if(set.equals("dayly")) measure = QueryInfo.getInstance().getDaylymeasures().get(val);
-                    else if (set.equals("monthly")) measure = QueryInfo.getInstance().getMonthlymeasures().get(val);
+                    if(params.getSet().equals("hourly")) params.setParam(QueryInfo.getInstance().getHourlymeasures().get(val));
+                    else if(params.getSet().equals("dayly")) params.setParam(QueryInfo.getInstance().getDaylymeasures().get(val));
+                    else if (params.getSet().equals("monthly")) params.setParam(QueryInfo.getInstance().getMonthlymeasures().get(val));
                     submitButton.setEnabled(true);
                 }
             }
@@ -143,13 +149,18 @@ public class ReliabilityPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(measure == null){
-                JOptionPane.showMessageDialog(null, "Non hai selezionato la misura");
+            try {
+                params.verify();
+                queryResult.add(params.createGraph());
+            } catch (UncompleteQueryParamInitialization ex) {
+                throw new RuntimeException(ex);
+            } catch (WrongDateInitialization ex) {
+                throw new RuntimeException(ex);
+            } catch (NoValuesForParamsException ex) {
+                JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
             }
-            else{
-                queryResult.add(new ReliabilityTableVisualization(DataAPI.getReliabilityOfStations(set,measure)));
-                queryResult.setVisible(true);
-            }
+            queryResult.setVisible(true);
         }
     }
 }

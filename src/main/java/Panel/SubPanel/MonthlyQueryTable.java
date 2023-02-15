@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MonthlyQueryTable extends JPanel {
 
-    public MonthlyQueryTable(Map<String,String> measures, String searched) throws NoValuesForParamsException{
+    public MonthlyQueryTable(String searched, Map<String,String> measures) throws NoValuesForParamsException{
         if(measures.keySet().size()==0) throw  new NoValuesForParamsException();
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         Object[][] vals = new Object[measures.keySet().size()][2];

@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Inserite le misure possibili per i vari dataset nella classe QueryInfo">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/WeatherDistributionTableVisualization.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" afterDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Prima versione finale funzionante dell'applicazione.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Enums/PossibleWeatherInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Enums/QueryPeriod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Exceptions/UncompleteQueryParamInitialization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Exceptions/WrongDateInitialization.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/DaylyQueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/HourlyQueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/MonthlyQueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/PrecipitationQueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/QueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/ReliabilityQueryParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Query/WeatherInfoQueryParams.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Exceptions/NoValuesForParamsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Exceptions/NoValuesForParamsException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
@@ -16,12 +25,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/MonthlyQueryTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/MonthlyQueryTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PeriodQueryTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/PrecipitationTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/ReliabilityTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/ReliabilityTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +43,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -215,7 +219,9 @@
       <workItem from="1675960196808" duration="58000" />
       <workItem from="1675963577317" duration="449000" />
       <workItem from="1676019415113" duration="8778000" />
-      <workItem from="1676194200925" duration="1247000" />
+      <workItem from="1676194200925" duration="7200000" />
+      <workItem from="1676219750537" duration="5520000" />
+      <workItem from="1676476432768" duration="809000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -336,7 +342,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675960242592</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Prima versione finale funzionante dell'applicazione.">
+      <created>1676195552487</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1676195552487</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,6 +373,7 @@
     <MESSAGE value="Gui 3.0" />
     <MESSAGE value="Gui 4.0" />
     <MESSAGE value="Inserite le misure possibili per i vari dataset nella classe QueryInfo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Inserite le misure possibili per i vari dataset nella classe QueryInfo" />
+    <MESSAGE value="Prima versione finale funzionante dell'applicazione." />
+    <option name="LAST_COMMIT_MESSAGE" value="Prima versione finale funzionante dell'applicazione." />
   </component>
 </project>

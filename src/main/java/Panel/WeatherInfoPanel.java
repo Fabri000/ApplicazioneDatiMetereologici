@@ -1,8 +1,13 @@
 package Panel;
 
 import DataApi.GraphCreator;
+import Enums.PossibleWeatherInfo;
 import Enums.QueryType;
+import Exceptions.NoValuesForParamsException;
+import Exceptions.UncompleteQueryParamInitialization;
+import Exceptions.WrongDateInitialization;
 import Panel.SubPanel.WeatherDistributionTableVisualization;
+import Query.WeatherInfoQueryParams;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
 import org.knowm.xchart.XChartPanel;
@@ -16,13 +21,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class WeatherInfoPanel extends JPanel {
-    private String datain,datafin,param;
-    private QueryType type;
+    private WeatherInfoQueryParams params;
     private JCheckBox weatherdistribution,windchill;
     private JComboBox datainselector,datafinselector,stateselector,stationselector,zoneselector,timezoneselector, queryTypeselector;
     private JButton submitButton, newResearchButton, returnHomeButton;
     private JPanel queryResult;
     public WeatherInfoPanel(){
+        params=new WeatherInfoQueryParams();
         this.setSize(new Dimension(1920,1080));
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setBorder(new EmptyBorder(50,100,0,100));
@@ -111,22 +116,24 @@ public class WeatherInfoPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 JCheckBox source = (JCheckBox) e.getSource();
                 if(source.equals(weatherdistribution)){
-                    datain=null;
+                    params.setDatai(null);
                     datainselector.setSelectedItem(null);
                     datainselector.setEnabled(true);
-                    datafin = null;
+                    params.setDataf(null);
                     datafinselector.setSelectedItem(null);
                     datafinselector.setEnabled(true);
                     stateselector.setEnabled(true);
+                    params.setInfo(PossibleWeatherInfo.WEATHER_DISTRIBUTION);
                 }
                 else if(source.equals(windchill)){
-                    datain=null;
+                    params.setDatai(null);
                     datainselector.setSelectedItem(null);
                     datainselector.setEnabled(true);
-                    datafin = null;
+                    params.setDataf(null);
                     datafinselector.setSelectedItem(null);
                     datafinselector.setEnabled(false);
                     queryTypeselector.setEnabled(true);
+                    params.setInfo(PossibleWeatherInfo.WINDCHILL);
                 }
             }
         }
@@ -136,8 +143,8 @@ public class WeatherInfoPanel extends JPanel {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox<String> source = (JComboBox<String>) e.getSource();
                     String val = source.getSelectedItem().toString();
-                    if(source.equals(datainselector)) datain=val;
-                    else if (source.equals(datafinselector)) datafin =val;
+                    if(source.equals(datainselector)) params.setDatai(val);
+                    else if (source.equals(datafinselector)) params.setDataf(val);
                 }
             }
         }
@@ -162,8 +169,8 @@ public class WeatherInfoPanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox source = (JComboBox<String>) e.getSource();
-                    type = QueryInfo.getInstance().getTypeOfQuery().get( source.getSelectedItem().toString());
-                    switch (type){
+                    params.setType(QueryInfo.getInstance().getTypeOfQuery().get( source.getSelectedItem().toString()));
+                    switch (params.getType()){
                         case STATION -> stationselector.setEnabled(true);
                         case STATE -> stateselector.setEnabled(true);
                         case ZONE -> zoneselector.setEnabled(true);
@@ -215,8 +222,8 @@ public class WeatherInfoPanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED){
                     JComboBox c =(JComboBox<String>) e.getSource();
-                    if(type==QueryType.STATION) param= c.getSelectedItem().toString().split("-")[0];
-                    else param= c.getSelectedItem().toString();
+                    if(params.getType()==QueryType.STATION) params.setParam(c.getSelectedItem().toString().split("-")[0]);
+                    else params.setParam(c.getSelectedItem().toString());
                     submitButton.setEnabled(true);
                 }
             }
@@ -227,20 +234,20 @@ public class WeatherInfoPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(submitButton)){
-                if(weatherdistribution.isSelected()){
-                    if(datain==null || datafin==null){
-                        JOptionPane.showMessageDialog(null, "Devi selezionare le date per il periodo di interesse");
-                    }
-                    else if (Integer.parseInt(datain)>Integer.parseInt(datafin)) {
-                        JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
-                        ApplicazioneDatiMetereologiciGUI.getInstance().setView(new WeatherInfoPanel());
-                    }
-                    Object[][] ris = GraphCreator.getDistriibutionWeatherType(datain,datafin,param);
-                    queryResult.add(new WeatherDistributionTableVisualization(ris));
-                }
-                else if (windchill.isSelected()) {
-                    if(datain==null) JOptionPane.showMessageDialog(null, "Devi selezionare le date per il periodo di interesse");
-                    queryResult.add(new XChartPanel<>(GraphCreator.getWindChillGraph(datain,type,param)));
+                try {
+                    params.verify();
+                    queryResult.add(params.createGraph());
+                } catch (UncompleteQueryParamInitialization ex) {
+                    JOptionPane.showMessageDialog(null, "Alcuni parametri della query non sono stati inizializati");
+                } catch (WrongDateInitialization ex) {
+                    JOptionPane.showMessageDialog(null, "Il periodo selezionato non è valido");
+                    datafinselector.setSelectedItem(null);
+                    params.setDataf(null);
+                    datainselector.setSelectedItem(null);
+                    params.setDatai(null);
+                } catch (NoValuesForParamsException ex) {
+                    JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new WeatherInfoPanel());
                 }
                 queryResult.setVisible(true);
             }
