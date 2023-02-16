@@ -67,7 +67,6 @@ public class HourlyQueryParams extends QueryParams{
         }
     }
 
-
     @Override
     public JPanel createGraph() throws NoValuesForParamsException {
         JPanel ris = null;

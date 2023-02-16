@@ -14,7 +14,12 @@ public class QueryTableVisualization extends JPanel {
             vals[i][0]=k;
             if(measure.equals("Sunset")|| measure.equals("Sunrise")) {
                 String val = measures.get(k).toString();
-                vals[i][1]=val.substring(0,2)+":"+val.substring(2,4);
+                if(Integer.parseInt(val)<100){
+                    vals[i][1]="00:"+val.substring(0,2);    
+                } else if (Integer.parseInt(val)<1000) {
+                    vals[i][1]="0"+val.substring(0,1)+":"+val.substring(1,3);
+                }
+                else vals[i][1]=val.substring(0,2)+":"+val.substring(2,4);
             }
             else  vals[i][1]=measures.get(k);
             i++;

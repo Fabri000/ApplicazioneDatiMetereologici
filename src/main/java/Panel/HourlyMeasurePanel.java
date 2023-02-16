@@ -116,8 +116,8 @@ public class HourlyMeasurePanel extends JPanel {
                     JComboBox source = (JComboBox) e.getSource();
                     if(source.equals(measureSelector)){
                        params.setMeasure(QueryInfo.getInstance().getHourlymeasures().get(source.getSelectedItem()));
-                        measureSelector.setEnabled(false);
-                        ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
+                       measureSelector.setEnabled(false);
+                       ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
                     }
                     else if (source.equals(typeOfQuerySelector)){
                         params.setType(QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem()));

@@ -11,4 +11,5 @@ public abstract class QueryParams {
 
     abstract void verify() throws UncompleteQueryParamInitialization, WrongDateInitialization;
     abstract JPanel createGraph() throws NoValuesForParamsException;
+
 }

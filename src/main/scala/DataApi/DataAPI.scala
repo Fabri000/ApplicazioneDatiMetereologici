@@ -17,15 +17,16 @@ object DataAPI {
   private var precip :DataFrame = null
   private var remarks :DataFrame = null
   private var stations : DataFrame = null
+  private var sparkSession: SparkSession =null
   def start(spark: SparkSession )={
+    sparkSession=spark
     val d= new Array[DataFrame](12)
     val m= new Array[DataFrame](12)
     val h= new Array[DataFrame](12)
     val p= new Array[DataFrame](12)
     val r= new Array[DataFrame](12)
     val s= new Array[DataFrame](12)
-
-    /*for (i<- 0 to 11){
+    for (i<- 0 to 11){
       var input="D:\\datimeteorologici\\datimeteo\\QCLCD2013"+ {if( i+1<10 ) "0"+(i+1) else (i+1) } +"\\2013"+{if( (i+1)<10 ) "0"+(i+1) else (i+1) }+"daily.txt"
       d(i)=spark.read.option("header","true").option("inferschema","true").csv(input)
       input="D:\\datimeteorologici\\datimeteo\\QCLCD2013"+ {if( i+1<10 ) "0"+(i+1) else (i+1) } +"\\2013"+{if( (i+1)<10 ) "0"+(i+1) else (i+1) }+"monthly.txt"
@@ -39,19 +40,19 @@ object DataAPI {
       input= "D:\\datimeteorologici\\datimeteo\\QCLCD2013" + {if (i + 1 < 10) "0" + (i + 1) else (i + 1)} + "\\2013" + {if ((i + 1) < 10) "0" + (i + 1) else (i + 1)} + "station.txt"
       s(i) = spark.read.option("header", "true").option("inferschema", "true").option("delimiter","|").csv(input)
     }
-    dayly = d.reduce(_ union _)
-    monthly = m.reduce(_ union _)
-    hourly = h.reduce(_ union _)
-    precip = p.reduce(_ union _)
-    remarks = r.reduce(_ union _)
-    stations = s.reduce(_ union _).dropDuplicates()*/
-    dayly = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302daily.txt")
+    dayly = d.reduce(_ union _).cache()
+    monthly = m.reduce(_ union _).cache()
+    hourly = h.reduce(_ union _).cache()
+    precip = p.reduce(_ union _).cache()
+    remarks = r.reduce(_ union _).cache()
+    stations = s.reduce(_ union _).dropDuplicates().cache()
+    /*dayly = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302daily.txt")
     monthly =spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302monthly.txt")
     hourly=spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302hourly.txt")
     precip = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302precip.txt")
     remarks = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302remarks.txt")
     stations = spark.read.option("header", "true").option("inferschema", "true").option("delimiter","|").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302station.txt")
-  }
+  */}
   def getDatas(dataframe:String): DataFrame ={
     val df = dataframe match {
       case "dayly"=> dayly
@@ -65,16 +66,16 @@ object DataAPI {
   }
   def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType, param:String ): java.util.Map[String,String]={
     val df: DataFrame = getDatas(set)
-    val stationOfInterest = stations.select("WBAN", "Location").filter(generateStationsQuery(tipo, param))
-    val ris : Dataset[Row] =  df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonthDay =" + data)
+    val stationOfInterest = getStationsOfInterest(tipo,param,"Location")
+    val ris : Dataset[Row] =  df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonthDay =" + data).filter(col(measure).notEqual("-").and(col(measure).notEqual("M")).and(col(measure).isNotNull))
     val m: scala.collection.mutable.Map[String,String] =  scala.collection.mutable.Map[String,String]()
-    ris.collect().map(row=> m.put(row.getString(0),row.getString(1)))
+    sparkSession.sparkContext.parallelize(ris.collect(),4).map(row=> m.put(row.getString(0),row.getString(1)))
     return m.asJava
   }
   def getMeasureInPeriod(set: String, in: String, fin:String, measure:String, tipo: QueryType, param: String):DataFrame = {
     val df: DataFrame = getDatas(set)
     var date="YearMonthDay"
-    val stationOfInterest = stations.select("WBAN", "Location").filter(generateStationsQuery(tipo, param))
+    val stationOfInterest = getStationsOfInterest(tipo,param,"Location")
     if(set=="hourly"){
       date = "Date"
       return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date ,"Time", measure).filter(date+">=" + in + " AND "+  date+"<=" + fin)
@@ -85,20 +86,20 @@ object DataAPI {
   }
   def getMeasureInHourlyPeriod(data: String, in: String, fin: String, measure: String, tipo: QueryType, param: String): DataFrame = {
     val df: DataFrame = getDatas("hourly")
-    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param)).distinct()
+    val stationOfInterest = getStationsOfInterest(tipo,param,"Location").filter(generateStationsQuery(tipo, param)).distinct()
     return df.join(stationOfInterest, "WBAN").select("WBAN","Location","Date","Time",measure).filter("Date=" + data + " AND Time>=" + in + " AND Time<= "+fin)
   }
   def getMonthlyMeasure( month:String, measure:String, tipo:QueryType,param:String): util.Map[String,String]={
     val df: DataFrame = getDatas("monthly")
-    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param))
+    val stationOfInterest = getStationsOfInterest(tipo,param,"Location").filter(generateStationsQuery(tipo, param))
     val ris : Dataset[Row] = df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonth=" + month).filter(col(measure).notEqual("-").and(col(measure).notEqual("M")).and(col(measure).isNotNull))
     val m: scala.collection.mutable.Map[String, String] = scala.collection.mutable.Map[String, String]()
-    ris.collect().map(row => m.put(row.getString(0), row.getString(1)))
+    sparkSession.sparkContext.parallelize(ris.collect(),4).map(row => m.put(row.getString(0), row.getString(1)))
     return m.asJava
   }
   def getMonthlyMeasureInPeriod( in: String, fin:String, measure: String, tipo: QueryType, param:String): DataFrame = {
     val df: DataFrame = getDatas("monthly")
-    val stationOfInterest = stations.select("WBAN","Location").filter(generateStationsQuery(tipo, param))
+    val stationOfInterest = getStationsOfInterest(tipo,param,"Location").filter(generateStationsQuery(tipo, param))
     return df.join(stationOfInterest, "WBAN").select("WBAN","Location","YearMonth",measure).filter("YearMonth <= " + fin +" AND YearMonth >= "+ in)
   }
   def getReliabilityOfStations(set:String, measure:String): Array[Array[String]]={
@@ -155,7 +156,7 @@ object DataAPI {
     return stations.select("WBAN", reqinfo).filter(generateStationsQuery(tipo, param)).dropDuplicates()
   }
   def getAllDates():Array[String]={
-  return dayly.select("YearMonthDay").collect().map(row=>row.getInt(0).toString())
+  return dayly.select("YearMonthDay").dropDuplicates("YearMonthDay").collect().map(row=>row.getInt(0).toString())
   }
   def getStationsName(): Array[String] ={
     return  stations.filter(col("Location").isNotNull.and(col("WBAN").isNotNull)).select("WBAN","Location").collect().map(row=> row.getInt(0)+"-"+row.getString(1))

@@ -47,7 +47,6 @@ public class DaylyQueryParams extends QueryParams {
 
     public void setPeriod(QueryPeriod period) {
         this.period = period;
-        System.out.println(this.period);
     }
 
     @Override
