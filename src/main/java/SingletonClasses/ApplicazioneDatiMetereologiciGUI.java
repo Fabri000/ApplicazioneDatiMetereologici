@@ -1,11 +1,11 @@
 package SingletonClasses;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import Panel.Dashboard;
 
 public class ApplicazioneDatiMetereologiciGUI extends JFrame {
-    static Font labelFont = new Font("Calibri",Font.BOLD,20);
     private static ApplicazioneDatiMetereologiciGUI instance = null;
     JPanel view;
     private ApplicazioneDatiMetereologiciGUI(){
@@ -28,5 +28,4 @@ public class ApplicazioneDatiMetereologiciGUI extends JFrame {
         this.setContentPane(view);
         repaint();
     }
-    public Font getLabelFont(){ return labelFont;}
 }

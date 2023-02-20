@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Dashboard extends JPanel {
-    private JButton d1= new DashboardButton("Rapporti giornalieri");
-    private JButton d2 = new DashboardButton("Rapporti orari");
-    private JButton d3 = new DashboardButton("Rapporti mensili");
+    private JButton d1= new DashboardButton("Rilevazioni giornaliere");
+    private JButton d2 = new DashboardButton("Rilevazioni orarie");
+    private JButton d3 = new DashboardButton("Rilevazioni mensili");
     private JButton d4 = new DashboardButton("Informazioni meteorologiche");
-    private JButton d5 = new DashboardButton("Rapporti sull'affidabilità delle stazioni");
-    private JButton d6 = new DashboardButton("Rapporto sulle precipitazioni");
+    private JButton d5 = new DashboardButton("Affidabilità delle stazioni");
+    private JButton d6 = new DashboardButton("Rilevazioni delle precipitazioni");
 
     public Dashboard(){
         this.setSize(new Dimension(1920,1080));

@@ -86,8 +86,7 @@ public class HourlyMeasurePanel extends JPanel {
             JPanel p1 = new JPanel();
             p1.setSize(0,20);
             p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
-            JLabel l1  = new JLabel("Seleziona la misura di interesse:");
-            p1.add(l1);
+            p1.add(UIElemCreator.createLabel("Seleziona la misura di interesse:"));
             measureSelector = new JComboBox<>(QueryInfo.getInstance().getHourlymeasures().keySet().toArray(new String[0]));
             measureSelector.setSelectedItem(null);
             measureSelector.setAlignmentX(LEFT_ALIGNMENT);
@@ -99,8 +98,7 @@ public class HourlyMeasurePanel extends JPanel {
             JPanel p2 = new JPanel();
             p2.setSize(600,20);
             p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
-            JLabel l2 = new JLabel("Seleziona i parametri di interesse:");
-            p2.add(l2);
+            p2.add(UIElemCreator.createLabel("Seleziona i parametri di interesse:"));
             typeOfQuerySelector = new JComboBox<>(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             typeOfQuerySelector.setSelectedItem(null);
             typeOfQuerySelector.setAlignmentX(LEFT_ALIGNMENT);
@@ -139,20 +137,19 @@ public class HourlyMeasurePanel extends JPanel {
         public TimePeriodSelectionPanel(){
             this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
             this.setAlignmentX(CENTER_ALIGNMENT);
-            this.setMaximumSize(new Dimension(920,20));
+            this.setMaximumSize(new Dimension(1500,20));
             this.setBorder(new EmptyBorder(0,0,10,0));
             JPanel p1 = new JPanel();
             p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
-            JLabel l1 = new JLabel("Seleziona l'arco temporale:");
-            p1.add(l1);
+            p1.add(UIElemCreator.createLabel("Seleziona l'arco temporale:"));
             ActionListener listener = new PeriodSelectionListener();
-            dataandhourperiod = new JCheckBox("Giorno e Fascia oraria");
-            dataandhourperiod.setSize(200,20);
+            dataandhourperiod = UIElemCreator.createCheckBox("Giorno e Fascia oraria");
             dataandhourperiod.addActionListener(listener);
-            periodindays = new JCheckBox("Periodo di giorni");
+            periodindays = UIElemCreator.createCheckBox("Periodo di giorni");
             periodindays.addActionListener(listener);
-            periodindays.setSize(200,20);
-            p1.add(dataandhourperiod);p1.add(periodindays);
+            p1.add(dataandhourperiod);
+            p1.add(Box.createRigidArea(new Dimension(20,0)));
+            p1.add(periodindays);
             group.add(dataandhourperiod);group.add(periodindays);
             this.add(p1);
             JPanel p2 = new JPanel();
@@ -178,10 +175,10 @@ public class HourlyMeasurePanel extends JPanel {
             hourfin.addItemListener(listener1);
             hourfin.setEnabled(false);
             hourfin.setSize(200,20);
-            p2.add(new JLabel("Seleziona una data iniziale:"));p2.add(datain);
-            p2.add(new JLabel("Seleziona una data finale:"));p2.add(datafin);
-            p2.add(new JLabel("Selezione un'orario iniziale:")); p2.add(hourin);
-            p2.add(new JLabel("Selezione un'orario finale:")); p2.add(hourfin);
+            p2.add(UIElemCreator.createLabel("Seleziona una data iniziale:"));p2.add(datain);
+            p2.add(UIElemCreator.createLabel("Seleziona una data finale:"));p2.add(datafin);
+            p2.add(UIElemCreator.createLabel("Selezione un'orario iniziale:")); p2.add(hourin);
+            p2.add(UIElemCreator.createLabel("Selezione un'orario finale:")); p2.add(hourfin);
             this.add(p2);
         }
         class PeriodSelectionListener implements ActionListener{
@@ -232,8 +229,7 @@ public class HourlyMeasurePanel extends JPanel {
             this.setSize(1000,20);
             this.setBorder(new EmptyBorder(0,0,10,0));
             SelectionQueryParamsListener listener = new SelectionQueryParamsListener();
-            JLabel l2 = new JLabel("Seleziona una stazione:");
-            this.add(l2);
+            this.add(UIElemCreator.createLabel("Seleziona una stazione:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stationselectionbox.setSelectedItem(null);
             stationselectionbox.setMaximumSize(new Dimension(200,20));
@@ -241,8 +237,7 @@ public class HourlyMeasurePanel extends JPanel {
             stationselectionbox.setEnabled(false);
             this.add(stationselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l3 = new JLabel("Seleziona un fuso orario:");
-            this.add(l3);
+            this.add(UIElemCreator.createLabel("Seleziona un fuso orario:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             timezoneselectionbox.setSelectedItem(null);
             timezoneselectionbox.addItemListener(listener);
@@ -250,8 +245,7 @@ public class HourlyMeasurePanel extends JPanel {
             timezoneselectionbox.setEnabled(false);
             this.add(timezoneselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l4 = new JLabel("Seleziona uno stato:");
-            this.add(l4);
+            this.add(UIElemCreator.createLabel("Seleziona uno stato:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stateselectionbox.setSelectedItem(null);
             stateselectionbox.addItemListener(listener);
@@ -259,8 +253,7 @@ public class HourlyMeasurePanel extends JPanel {
             stateselectionbox.setEnabled(false);
             this.add(stateselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l5 = new JLabel("Seleziona una zona:");
-            this.add(l5);
+            this.add(UIElemCreator.createLabel("Seleziona una zona:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             zoneselectionbox.setSelectedItem(null);
             zoneselectionbox.addItemListener(listener);

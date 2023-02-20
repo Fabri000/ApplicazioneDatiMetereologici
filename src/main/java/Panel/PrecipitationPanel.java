@@ -8,6 +8,7 @@ import Panel.SubPanel.PrecipitationTableVisualization;
 import Query.PrecipitationQueryParams;
 import SingletonClasses.ApplicazioneDatiMetereologiciGUI;
 import SingletonClasses.QueryInfo;
+import org.apache.spark.internal.config.UI;
 import org.knowm.xchart.XChartPanel;
 
 import javax.swing.*;
@@ -77,7 +78,7 @@ public class PrecipitationPanel extends JPanel {
             this.setAlignmentX(CENTER_ALIGNMENT);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
             this.setMaximumSize(new Dimension(800,20));
-            this.add(new JLabel("Seleziona il valore minimo di precipitazioni:"));
+            this.add(UIElemCreator.createLabel("Seleziona il valore minimo di precipitazioni:"));
             this.add(Box.createRigidArea(new Dimension( 20,0)));
             thresholdselector = new JComboBox(QueryInfo.getInstance().getThresholds());
             thresholdselector.setSelectedItem(null);
@@ -100,7 +101,7 @@ public class PrecipitationPanel extends JPanel {
             this.setAlignmentX(CENTER_ALIGNMENT);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
             this.setMaximumSize(new Dimension(800,20));
-            this.add(new JLabel("Seleziona data iniziale:"));
+            this.add(UIElemCreator.createLabel("Seleziona data iniziale:"));
             this.add(Box.createRigidArea(new Dimension( 20,0)));
             datain = new JComboBox(QueryInfo.getInstance().getDate());
             datain.setSelectedItem(null);
@@ -108,7 +109,7 @@ public class PrecipitationPanel extends JPanel {
             datain.setMaximumSize(new Dimension(200,20));
             this.add(datain);
             this.add(Box.createRigidArea(new Dimension(100,0)));
-            this.add(new JLabel("Seleziona data finale:"));
+            this.add(UIElemCreator.createLabel("Seleziona data finale:"));
             datafin= new JComboBox(QueryInfo.getInstance().getDate());
             datafin.setSelectedItem(null);
             datafin.addItemListener(listener);
@@ -143,7 +144,7 @@ public class PrecipitationPanel extends JPanel {
             this.setBorder(new EmptyBorder(10,0,10,0));
             this.setMaximumSize(new Dimension(920,20));
             this.add(Box.createRigidArea(new Dimension(100,0)));
-            this.add(new JLabel("Seleziona i parametri di interesse:"));
+            this.add(UIElemCreator.createLabel("Seleziona i parametri di interesse:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             typeOfQuerySelector = new JComboBox<>(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             typeOfQuerySelector.setSelectedItem(null);
@@ -179,8 +180,8 @@ public class PrecipitationPanel extends JPanel {
             this.setSize(1000,20);
             this.setBorder(new EmptyBorder(0,0,10,0));
             SelectionQueryParamsListener listener = new SelectionQueryParamsListener();
-            JLabel l2 = new JLabel("Seleziona una stazione:");
-            this.add(l2);
+            JLabel l2 = new JLabel();
+            this.add(UIElemCreator.createLabel("Seleziona una stazione:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stationselectionbox.setSelectedItem(null);
             stationselectionbox.setMaximumSize(new Dimension(200,20));
@@ -188,8 +189,7 @@ public class PrecipitationPanel extends JPanel {
             stationselectionbox.setEnabled(false);
             this.add(stationselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l3 = new JLabel("Seleziona un fuso orario:");
-            this.add(l3);
+            this.add(UIElemCreator.createLabel("Seleziona un fuso orario:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             timezoneselectionbox.setSelectedItem(null);
             timezoneselectionbox.addItemListener(listener);
@@ -197,8 +197,7 @@ public class PrecipitationPanel extends JPanel {
             timezoneselectionbox.setEnabled(false);
             this.add(timezoneselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l4 = new JLabel("Seleziona uno stato:");
-            this.add(l4);
+            this.add(UIElemCreator.createLabel("Seleziona uno stato:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stateselectionbox.setSelectedItem(null);
             stateselectionbox.addItemListener(listener);
@@ -206,8 +205,7 @@ public class PrecipitationPanel extends JPanel {
             stateselectionbox.setEnabled(false);
             this.add(stateselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l5 = new JLabel("Seleziona una zona:");
-            this.add(l5);
+            this.add(UIElemCreator.createLabel("Seleziona una zona:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             zoneselectionbox.setSelectedItem(null);
             zoneselectionbox.addItemListener(listener);

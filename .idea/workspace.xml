@@ -4,14 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Versione finale dell'applicazione.&#10;Isolata la gestione dei parametri delle query.&#10;Migliorie sulla ui da realizzare">
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Panel/UIElemCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ApplicazioneDatiMetereologici.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Buttons/DashboardButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Buttons/DashboardButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/SubPanel/QueryTableVisualization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Query/DaylyQueryParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Query/DaylyQueryParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Query/HourlyQueryParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Query/HourlyQueryParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Query/QueryParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Query/QueryParams.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/QueryInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -212,6 +218,13 @@
       <workItem from="1676477652419" duration="2504000" />
       <workItem from="1676538411891" duration="1718000" />
       <workItem from="1676542176408" duration="6162000" />
+      <workItem from="1676561550827" duration="4642000" />
+      <workItem from="1676627053520" duration="4905000" />
+      <workItem from="1676664043840" duration="387000" />
+      <workItem from="1676671715489" duration="589000" />
+      <workItem from="1676713774577" duration="752000" />
+      <workItem from="1676715217126" duration="5407000" />
+      <workItem from="1676884222868" duration="1633000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -346,7 +359,21 @@
       <option name="project" value="LOCAL" />
       <updated>1676477922791</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare">
+      <created>1676561744005</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1676561744005</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare">
+      <created>1676561818585</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1676561818585</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,6 +411,7 @@
     <MESSAGE value="Inserite le misure possibili per i vari dataset nella classe QueryInfo" />
     <MESSAGE value="Prima versione finale funzionante dell'applicazione." />
     <MESSAGE value="Versione finale dell'applicazione.&#10;Isolata la gestione dei parametri delle query.&#10;Migliorie sulla ui da realizzare" />
-    <option name="LAST_COMMIT_MESSAGE" value="Versione finale dell'applicazione.&#10;Isolata la gestione dei parametri delle query.&#10;Migliorie sulla ui da realizzare" />
+    <MESSAGE value="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare" />
+    <option name="LAST_COMMIT_MESSAGE" value="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare" />
   </component>
 </project>

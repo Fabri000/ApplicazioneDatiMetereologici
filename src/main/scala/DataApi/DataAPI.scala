@@ -5,8 +5,6 @@ import org.apache.spark.sql.functions.{col, count, lit, round, udf}
 import org.apache.spark.sql._
 
 import scala.jdk.CollectionConverters._
-import com.datawizards.splot.api.implicits._
-import org.knowm.xchart.{QuickChart, SwingWrapper, XYChart}
 
 import java.util
 
@@ -26,7 +24,7 @@ object DataAPI {
     val p= new Array[DataFrame](12)
     val r= new Array[DataFrame](12)
     val s= new Array[DataFrame](12)
-    for (i<- 0 to 11){
+    /*for (i<- 0 to 11){
       var input="D:\\datimeteorologici\\datimeteo\\QCLCD2013"+ {if( i+1<10 ) "0"+(i+1) else (i+1) } +"\\2013"+{if( (i+1)<10 ) "0"+(i+1) else (i+1) }+"daily.txt"
       d(i)=spark.read.option("header","true").option("inferschema","true").csv(input)
       input="D:\\datimeteorologici\\datimeteo\\QCLCD2013"+ {if( i+1<10 ) "0"+(i+1) else (i+1) } +"\\2013"+{if( (i+1)<10 ) "0"+(i+1) else (i+1) }+"monthly.txt"
@@ -45,14 +43,14 @@ object DataAPI {
     hourly = h.reduce(_ union _).cache()
     precip = p.reduce(_ union _).cache()
     remarks = r.reduce(_ union _).cache()
-    stations = s.reduce(_ union _).dropDuplicates().cache()
-    /*dayly = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302daily.txt")
-    monthly =spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302monthly.txt")
-    hourly=spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302hourly.txt")
-    precip = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302precip.txt")
-    remarks = spark.read.option("header","true").option("inferschema","true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302remarks.txt")
-    stations = spark.read.option("header", "true").option("inferschema", "true").option("delimiter","|").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302station.txt")
-  */}
+    stations = s.reduce(_ union _).dropDuplicates().cache()*/
+    dayly = spark.read.option("header", "true").option("inferschema", "true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302daily.txt")
+    monthly = spark.read.option("header", "true").option("inferschema", "true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302monthly.txt")
+    hourly = spark.read.option("header", "true").option("inferschema", "true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302hourly.txt")
+    precip = spark.read.option("header", "true").option("inferschema", "true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302precip.txt")
+    remarks = spark.read.option("header", "true").option("inferschema", "true").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302remarks.txt")
+    stations = spark.read.option("header", "true").option("inferschema", "true").option("delimiter", "|").csv("D:\\datimeteorologici\\datimeteo\\QCLCD201302\\201302station.txt")
+  }
   def getDatas(dataframe:String): DataFrame ={
     val df = dataframe match {
       case "dayly"=> dayly
@@ -110,13 +108,10 @@ object DataAPI {
     val stationsName = getDatas("stations").select("WBAN","Location").dropDuplicates()
     return ris.join(stationsName, "WBAN").select("Location","Reliability").collect().map(row => Array(row.getString(0),row.getDouble(1).toString))
   }
-  //
   def getPrecipitationOver(in:String, fin:String,threshold:String, queryType: QueryType, param:String ):DataFrame={
     val df = getMeasureInPeriod("precip",in,fin,"Precipitation", queryType, param)
     val filtered :DataFrame = df.filter("Precipitation>="+ threshold).groupBy("WBAN").agg(count("WBAN").as("Filtered"))
-    filtered.show()
     val unfiltered : DataFrame = df.groupBy("WBAN").count()
-    unfiltered.show()
     val calculate = udf( calculatePercentage _)
     val partial:DataFrame = filtered.join(unfiltered,"WBAN").withColumn("Percentage", calculate(col("Filtered"),col("count")))
     val stationsNames : DataFrame = getStationsOfInterest(queryType,param,"Location")

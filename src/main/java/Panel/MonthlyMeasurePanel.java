@@ -90,8 +90,7 @@ public class MonthlyMeasurePanel extends JPanel {
             JPanel p1 = new JPanel();
             p1.setSize(0,20);
             p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
-            JLabel l1  = new JLabel("Seleziona la misura di interesse:");
-            p1.add(l1);
+            p1.add(UIElemCreator.createLabel("Seleziona la misura di interesse:"));
             measureSelector = new JComboBox<>(QueryInfo.getInstance().getMonthlymeasures().keySet().toArray(new String[0]));
             measureSelector.setSelectedItem(null);
             measureSelector.setAlignmentX(LEFT_ALIGNMENT);
@@ -103,8 +102,7 @@ public class MonthlyMeasurePanel extends JPanel {
             JPanel p2 = new JPanel();
             p2.setSize(600,20);
             p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
-            JLabel l2 = new JLabel("Seleziona i parametri di interesse:");
-            p2.add(l2);
+            p2.add(UIElemCreator.createLabel("Seleziona i parametri di interesse:"));
             typeOfQuerySelector = new JComboBox<>(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             typeOfQuerySelector.setSelectedItem(null);
             typeOfQuerySelector.setAlignmentX(LEFT_ALIGNMENT);
@@ -148,16 +146,15 @@ public class MonthlyMeasurePanel extends JPanel {
             this.setBorder(new EmptyBorder(0,0,10,0));
             JPanel p1 = new JPanel();
             p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
-            JLabel l1 = new JLabel("Seleziona l'arco temporale:");
-            p1.add(l1);
+            p1.add(UIElemCreator.createLabel("Seleziona l'arco temporale:"));
             ActionListener listener = new PeriodSelectionListener();
-            singlemonth = new JCheckBox("Mese iniziale:");
-            singlemonth.setSize(200,20);
+            singlemonth = UIElemCreator.createCheckBox("Mese iniziale:");
             singlemonth.addActionListener(listener);
-            monthlyperiod = new JCheckBox("Mese finale:");
+            monthlyperiod = UIElemCreator.createCheckBox("Mese finale:");
             monthlyperiod.addActionListener(listener);
-            monthlyperiod.setSize(200,20);
-            p1.add(singlemonth);p1.add(monthlyperiod);
+            p1.add(singlemonth);
+            p1.add(Box.createRigidArea(new Dimension(20,0)));
+            p1.add(monthlyperiod);
             group.add(singlemonth);group.add(monthlyperiod);
             this.add(p1);
             JPanel p2 = new JPanel();
@@ -173,8 +170,8 @@ public class MonthlyMeasurePanel extends JPanel {
             monthfin.setSize(200,20);
             monthfin.addItemListener(listener1);
             monthfin.setEnabled(false);
-            p2.add(new JLabel("Seleziona una data iniziale:"));p2.add(monthin);
-            p2.add(new JLabel("Seleziona una data finale:"));p2.add(monthfin);
+            p2.add(UIElemCreator.createLabel("Seleziona una data iniziale:"));p2.add(monthin);
+            p2.add(UIElemCreator.createLabel("Seleziona una data finale:"));p2.add(monthfin);
             this.add(p2);
         }
         class PeriodSelectionListener implements ActionListener{
@@ -214,8 +211,7 @@ public class MonthlyMeasurePanel extends JPanel {
             this.setSize(1000,20);
             this.setBorder(new EmptyBorder(0,0,10,0));
             SelectionQueryParamsListener listener = new SelectionQueryParamsListener();
-            JLabel l2 = new JLabel("Seleziona una stazione:");
-            this.add(l2);
+            this.add(UIElemCreator.createLabel("Seleziona una stazione:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stationselectionbox.setSelectedItem(null);
             stationselectionbox.setMaximumSize(new Dimension(200,20));
@@ -223,8 +219,7 @@ public class MonthlyMeasurePanel extends JPanel {
             stationselectionbox.setEnabled(false);
             this.add(stationselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l3 = new JLabel("Seleziona un fuso orario:");
-            this.add(l3);
+            this.add(UIElemCreator.createLabel("Seleziona un fuso orario:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             timezoneselectionbox.setSelectedItem(null);
             timezoneselectionbox.addItemListener(listener);
@@ -232,8 +227,7 @@ public class MonthlyMeasurePanel extends JPanel {
             timezoneselectionbox.setEnabled(false);
             this.add(timezoneselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l4 = new JLabel("Seleziona uno stato:");
-            this.add(l4);
+            this.add(UIElemCreator.createLabel("Seleziona uno stato:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             stateselectionbox.setSelectedItem(null);
             stateselectionbox.addItemListener(listener);
@@ -241,8 +235,7 @@ public class MonthlyMeasurePanel extends JPanel {
             stateselectionbox.setEnabled(false);
             this.add(stateselectionbox);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            JLabel l5 = new JLabel("Seleziona una zona:");
-            this.add(l5);
+            this.add(UIElemCreator.createLabel("Seleziona una zona:"));
             this.add(Box.createRigidArea(new Dimension(10,0)));
             zoneselectionbox.setSelectedItem(null);
             zoneselectionbox.addItemListener(listener);

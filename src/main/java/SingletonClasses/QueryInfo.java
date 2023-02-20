@@ -18,6 +18,13 @@ public class QueryInfo {
         stations = DataAPI.getStationsName();
         zone = DataAPI.getZone();
         months = DataAPI.getMonths();
+        hourlymeasures= Map.of(
+                "Temperatura","DryBulbCelsius",
+                "Visibilità","Visibility",
+                "Precipitazioni","HourlyPrecip",
+                "Pressione al livello del mare","SeaLevelPressure",
+                "Velocità del vento","WindSpeed"
+        );
         daylymeasures= Map.of(
                 "Temperatura Massima","Tmax",
                 "Temperatura Minima", "Tmin",
@@ -27,13 +34,6 @@ public class QueryInfo {
                 "Precipitazioni Nevose","SnowFall",
                 "Pressione al livello del mare","SeaLevel",
                 "Velocità del vento","AvgSpeed"
-        );
-        hourlymeasures= Map.of(
-                "Temperatura","DryBulbCelsius",
-                "Visibilità","Visibility",
-                "Precipitazioni","HourlyPrecip",
-                "Pressione al livello del mare","SeaLevelPressure",
-                "Velocità del vento","WindSpeed"
         );
         monthlymeasures= Map.of(
                 "Temperatura Massima Media","AvgMaxTemp",
