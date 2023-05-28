@@ -47,30 +47,15 @@ public class PrecipitationPanel extends JPanel {
         queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new PrecipitationPanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class ThresholdsSelectionPanel extends JPanel{

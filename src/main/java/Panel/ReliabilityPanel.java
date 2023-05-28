@@ -38,30 +38,15 @@ public class ReliabilityPanel extends JPanel {
         queryResult = new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new ReliabilityPanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class DataSetSelectionPanel extends JPanel{
@@ -92,7 +77,7 @@ public class ReliabilityPanel extends JPanel {
             this.add(p1);
             JPanel p2  = new JPanel();
             p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
-            p2.add(new JLabel("Seleziona la misura:"));
+            p2.add(UIElemCreator.createLabel("Seleziona la misura:"));
             measureselector = new JComboBox();
             measureselector.setMaximumSize(new Dimension(300,20));
             measureselector.setEnabled(false);

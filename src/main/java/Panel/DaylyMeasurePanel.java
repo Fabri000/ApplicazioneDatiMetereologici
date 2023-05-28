@@ -44,30 +44,16 @@ public class DaylyMeasurePanel extends JPanel {
         queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new DaylyMeasurePanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
 
@@ -243,16 +229,16 @@ public class DaylyMeasurePanel extends JPanel {
             this.add(zoneselectionbox);
         }
         class SelectionQueryParamsListener implements ItemListener{
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if(e.getStateChange()==ItemEvent.SELECTED){
-                        submitButton.setEnabled(true);
-                        JComboBox<String> source = (JComboBox<String>) e.getSource();
-                        String val = source.getSelectedItem().toString();
-                        if (source.equals(stationselectionbox)) params.setParam(val.split("-")[0]);
-                        else params.setParam(val);
-                    }
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    submitButton.setEnabled(true);
+                    JComboBox<String> source = (JComboBox<String>) e.getSource();
+                    String val = source.getSelectedItem().toString();
+                    if (source.equals(stationselectionbox)) params.setParam(val.split("-")[0]);
+                    else params.setParam(val);
                 }
+            }
         }
     }
     class  submitButtonLister implements ActionListener{

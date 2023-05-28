@@ -16,10 +16,9 @@ public class Dashboard extends JPanel {
     private JButton d6 = new DashboardButton("Rilevazioni delle precipitazioni");
 
     public Dashboard(){
-        this.setSize(new Dimension(1920,1080));
         this.setBorder(BorderFactory.createEmptyBorder(100,100,100,100));
-        GridLayout l =new GridLayout(2,3,60,60);
-        this.setLayout(l);
+        this.setLayout(new GridLayout(2,3,60,60));
+        this.setSize(new Dimension(1920,1080));
         DashboardButtonListener listener=new DashboardButtonListener();
         d1.addActionListener(listener);
         this.add(d1);
@@ -34,6 +33,11 @@ public class Dashboard extends JPanel {
         d6.addActionListener(listener);
         this.add(d6);
     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.drawImage(new ImageIcon(ApplicazioneDatiMetereologiciGUI.bgimage).getImage(),0,0,null);
+    }
+
     private class DashboardButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {

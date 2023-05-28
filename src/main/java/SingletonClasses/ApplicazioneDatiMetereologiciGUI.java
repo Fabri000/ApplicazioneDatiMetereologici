@@ -1,12 +1,13 @@
 package SingletonClasses;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import Panel.Dashboard;
 
 public class ApplicazioneDatiMetereologiciGUI extends JFrame {
     private static ApplicazioneDatiMetereologiciGUI instance = null;
+    public static String bgimage ="C:\\Users\\fabri\\Desktop\\cielo.jpg";
+    JLabel background;
     JPanel view;
     private ApplicazioneDatiMetereologiciGUI(){
         setTitle("Applicazione Dati metereologici");

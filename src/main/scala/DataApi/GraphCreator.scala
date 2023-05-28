@@ -34,7 +34,7 @@ object GraphCreator {
       else{
         val data =row.getInt(2).toString
         var tmp = xAxisVals.get(code)
-        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6)), Integer.parseInt(data.substring(6, 8))))
+        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6))-1, Integer.parseInt(data.substring(6, 8))))
         xAxisVals.put(code,tmp)
       }
     })
@@ -191,7 +191,7 @@ object GraphCreator {
           min = Integer.parseInt(t.substring(2, 4))
         }
         var tmp = xAxisVals.get(code)
-        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6)), Integer.parseInt(data.substring(6, 8)),hour,min))
+        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6))-1, Integer.parseInt(data.substring(6, 8)),hour,min))
         xAxisVals.put(code, tmp)
       }
     })
@@ -248,7 +248,7 @@ object GraphCreator {
           min = Integer.parseInt(t.substring(2, 4))
         }
         var tmp = xAxisVals.get(code)
-        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6)), Integer.parseInt(data.substring(6, 8)), hour, min))
+        tmp.add(new Date(Integer.parseInt(data.substring(0, 4)), Integer.parseInt(data.substring(4, 6))-1, Integer.parseInt(data.substring(6, 8)), hour, min))
         xAxisVals.put(code, tmp)
       }
     })

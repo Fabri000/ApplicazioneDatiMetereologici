@@ -43,30 +43,15 @@ public class WeatherInfoPanel extends JPanel {
         queryResult= new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new WeatherInfoPanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
 
@@ -79,9 +64,9 @@ public class WeatherInfoPanel extends JPanel {
             this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
             JPanel checkboxs = new JPanel();
             checkboxs.setLayout( new BoxLayout(checkboxs,BoxLayout.X_AXIS));
-            checkboxs.add(UIElemCreator.createLabel("Seleziona le informazioni metereologiche che vuoi osservare:"));
+            checkboxs.add(UIElemCreator.createLabel("Informazione di interesse:"));
             checkboxs.add(Box.createRigidArea(new Dimension(20,0)));
-            weatherdistribution =UIElemCreator.createCheckBox("Distribuzione tipi di meteo");
+            weatherdistribution =UIElemCreator.createCheckBox("Distribuzione meteo");
             weatherdistribution.addActionListener(checkboxlistener);
             group.add(weatherdistribution);
             windchill = UIElemCreator.createCheckBox("Vento gelido");
@@ -157,7 +142,7 @@ public class WeatherInfoPanel extends JPanel {
         public QueryTypeSelectionPanel(){
             this.setSize(900,20);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-            this.add(new JLabel("Seleziona tipo:"));
+            this.add(UIElemCreator.createLabel("Seleziona tipo:"));
             queryTypeselector = new JComboBox(QueryInfo.getInstance().getTypeOfQuery().keySet().toArray(new String[0]));
             queryTypeselector.setMaximumSize(new Dimension(200,20));
             queryTypeselector.addItemListener(new QueryTypeSelectionListener());
@@ -189,7 +174,7 @@ public class WeatherInfoPanel extends JPanel {
         public QuerySelectionPanel(){
             this.setSize(900,20);
             this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-            this.add(new JLabel("Seleziona lo stato:"));
+            this.add(UIElemCreator.createLabel("Seleziona lo stato:"));
             stateselector = new JComboBox(QueryInfo.getInstance().getStates());
             stateselector.addItemListener(new QuerySelectionListener());
             stateselector.setSelectedItem(null);
@@ -197,21 +182,21 @@ public class WeatherInfoPanel extends JPanel {
             stateselector.setMaximumSize(new Dimension(200,20));
             this.add(stateselector);
             this.add(Box.createRigidArea(new Dimension(15,0)));
-            this.add(new JLabel("Seleziona la stazione:"));
+            this.add(UIElemCreator.createLabel("Seleziona la stazione:"));
             stationselector = new JComboBox(QueryInfo.getInstance().getStations());
             stationselector.addItemListener(new QuerySelectionListener());
             stationselector.setSelectedItem(null);
             stationselector.setEnabled(false);
             stationselector.setMaximumSize(new Dimension(200,20));
             this.add(stationselector);
-            this.add(new JLabel("Seleziona la zona:"));
+            this.add(UIElemCreator.createLabel("Seleziona la zona:"));
             zoneselector= new JComboBox(QueryInfo.getInstance().getZone());
             zoneselector.addItemListener(new QuerySelectionListener());
             zoneselector.setSelectedItem(null);
             zoneselector.setEnabled(false);
             zoneselector.setMaximumSize(new Dimension(200,20));
             this.add(zoneselector);
-            this.add(new JLabel("Seleziona il fuso orario:"));
+            this.add(UIElemCreator.createLabel("Seleziona il fuso orario:"));
             timezoneselector= new JComboBox(QueryInfo.getInstance().getTimezone());
             timezoneselector.addItemListener(new QuerySelectionListener());
             timezoneselector.setSelectedItem(null);

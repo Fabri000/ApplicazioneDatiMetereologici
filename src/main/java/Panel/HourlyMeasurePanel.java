@@ -47,30 +47,15 @@ public class HourlyMeasurePanel extends JPanel {
         queryResult=new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class TypeAndMeasureSelectionPanel extends  JPanel{
@@ -113,9 +98,9 @@ public class HourlyMeasurePanel extends JPanel {
                 if(e.getStateChange()== ItemEvent.SELECTED){
                     JComboBox source = (JComboBox) e.getSource();
                     if(source.equals(measureSelector)){
-                       params.setMeasure(QueryInfo.getInstance().getHourlymeasures().get(source.getSelectedItem()));
-                       measureSelector.setEnabled(false);
-                       ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
+                        params.setMeasure(QueryInfo.getInstance().getHourlymeasures().get(source.getSelectedItem()));
+                        measureSelector.setEnabled(false);
+                        ApplicazioneDatiMetereologiciGUI.getInstance().getContentPane().revalidate();
                     }
                     else if (source.equals(typeOfQuerySelector)){
                         params.setType(QueryInfo.getInstance().getTypeOfQuery().get(source.getSelectedItem()));
@@ -297,6 +282,10 @@ public class HourlyMeasurePanel extends JPanel {
                     params.setPeriod(null);
                 } catch (NoValuesForParamsException ex) {
                     JOptionPane.showMessageDialog(null, "Nel periodo selezionato non ci sono misurazioni valide per la richiesta");
+                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
+                }
+                catch (IllegalArgumentException ex){
+                    JOptionPane.showMessageDialog(null, "Mancano dei risultati");
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new HourlyMeasurePanel());
                 }
                 queryResult.setVisible(true);

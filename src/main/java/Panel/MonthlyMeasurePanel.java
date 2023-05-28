@@ -51,30 +51,15 @@ public class MonthlyMeasurePanel extends JPanel {
         queryResult = new JPanel();
         queryResult.setVisible(false);
         this.add(queryResult);
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
         newResearchButton = new JButton("Nuova ricerca");
-        newResearchButton.addActionListener(new ActionListener() {
+        this.add(UIElemCreator.createNavigationButtonPanel(newResearchButton,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource().equals(newResearchButton)){
                     ApplicazioneDatiMetereologiciGUI.getInstance().setView(new MonthlyMeasurePanel());
                 }
             }
-        });
-        returnHomeButton=new JButton("Ritorna alla home");
-        returnHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(returnHomeButton)){
-                    ApplicazioneDatiMetereologiciGUI.getInstance().setView(new Dashboard());
-                }
-            }
-        });
-        buttons.add( newResearchButton );
-        buttons.add(Box.createRigidArea(new Dimension(10,0)));
-        buttons.add( returnHomeButton);
-        this.add(buttons);
+        }));
         this.add(Box.createRigidArea(new Dimension(40,0)));
     }
     class TypeAndMeasureSelectionPanel extends  JPanel{
@@ -148,9 +133,9 @@ public class MonthlyMeasurePanel extends JPanel {
             p1.setLayout(new BoxLayout(p1,BoxLayout.X_AXIS));
             p1.add(UIElemCreator.createLabel("Seleziona l'arco temporale:"));
             ActionListener listener = new PeriodSelectionListener();
-            singlemonth = UIElemCreator.createCheckBox("Mese iniziale:");
+            singlemonth = UIElemCreator.createCheckBox("Singolo mese");
             singlemonth.addActionListener(listener);
-            monthlyperiod = UIElemCreator.createCheckBox("Mese finale:");
+            monthlyperiod = UIElemCreator.createCheckBox("Periodo mensile");
             monthlyperiod.addActionListener(listener);
             p1.add(singlemonth);
             p1.add(Box.createRigidArea(new Dimension(20,0)));
@@ -263,7 +248,6 @@ public class MonthlyMeasurePanel extends JPanel {
                 try{
                     params.verify();
                     queryResult.add(params.createGraph());
-
                 } catch (UncompleteQueryParamInitialization ex) {
                     JOptionPane.showMessageDialog(null, "Alcuni parametri della query non sono stati inizializati");
                 } catch (WrongDateInitialization ex) {
