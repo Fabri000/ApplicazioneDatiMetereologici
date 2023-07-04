@@ -4,22 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Migliorie grafiche ed ottimizzazioni varie.">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
+    <list default="true" id="016574d8-dd39-43dc-9f69-36a071600d02" name="Changes" comment="Bug fixed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Buttons/DashboardButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Buttons/DashboardButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/Dashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/DaylyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/HourlyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/MonthlyMeasurePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/PrecipitationPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/ReliabilityPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/UIElemCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/UIElemCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Panel/WeatherInfoPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SingletonClasses/ApplicazioneDatiMetereologiciGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/DataAPI.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/DataApi/GraphCreator.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,6 +224,10 @@
       <workItem from="1683969425111" duration="4961000" />
       <workItem from="1683999543627" duration="942000" />
       <workItem from="1684049644340" duration="1622000" />
+      <workItem from="1685264650872" duration="1980000" />
+      <workItem from="1685638179636" duration="1063000" />
+      <workItem from="1685643349449" duration="392000" />
+      <workItem from="1688492460613" duration="321000" />
     </task>
     <task id="LOCAL-00001" summary="Versione iniziale">
       <created>1673804629199</created>
@@ -392,7 +383,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676886283095</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Aggiornamento dataset.">
+      <created>1685264785423</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1685264785423</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,6 +452,7 @@
     <MESSAGE value="Versione finale dell'applicazione.&#10;Isolata la gestione dei parametri delle query.&#10;Migliorie sulla ui da realizzare" />
     <MESSAGE value="Versione finale dell'applicazione.&#10;Ottimizzazione e migliorie grafiche da effettuare" />
     <MESSAGE value="Migliorie grafiche ed ottimizzazioni varie." />
-    <option name="LAST_COMMIT_MESSAGE" value="Migliorie grafiche ed ottimizzazioni varie." />
+    <MESSAGE value="Aggiornamento dataset." />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiornamento dataset." />
   </component>
 </project>

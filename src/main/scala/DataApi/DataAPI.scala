@@ -36,7 +36,7 @@ object DataAPI {
   def getMeasureByDay (set:String, data:String, measure:String, tipo:QueryType, param:String ): java.util.Map[String,String]={
     val df: DataFrame = getDatas(set)
     val stationOfInterest = getStationsOfInterest(tipo,param,"Location")
-    val ris : Dataset[Row] =  df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonthDay =" + data)
+    val ris : Dataset[Row] =  df.join(stationOfInterest, "WBAN").select("Location",measure).filter("YearMonthDay =" + data).filter(measure+"!= \"-\"")
     val m: scala.collection.mutable.Map[String,String] =  scala.collection.mutable.Map[String,String]()
     ris.collect().map(row=> m.put(row.getString(0),row.getString(1)))
     ris.show()
@@ -52,7 +52,7 @@ object DataAPI {
       return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date ,"Time", measure).filter(date+">=" + in + " AND "+  date+"<=" + fin)
     }
     else {
-      df.join(stationOfInterest, "WBAN").select("WBAN","Location", date ,"Time", measure).filter(date+">=" + in + " AND "+  date+"<=" + fin).show()
+      df.join(stationOfInterest, "WBAN").select("WBAN","Location", date ,"YearMonthDay", measure).filter(date+">=" + in + " AND "+  date+"<=" + fin).show()
       return df.join(stationOfInterest, "WBAN").select("WBAN","Location", date , measure).filter(date+">=" + in + " AND "+  date+"<=" + fin)
     }
   }
